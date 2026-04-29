@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}Freelancer Sign In - The Bridge{% endblock %}
+
+{% block body_class %}bg-white dark:bg-[#050505] text-gray-900 dark:text-white flex items-center justify-center min-h-screen pt-24 pb-10 px-6 selection:bg-brand selection:text-black transition-colors duration-500{% endblock %}
+
+{% block content %}
+<!-- Background Glow & Interactive Elements -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <!-- Dynamic Orbs -->
+    <div id="orb-1" class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600/5 dark:bg-purple-600/10 blur-[120px] rounded-full transition-transform duration-1000 ease-out"></div>
+    <div id="orb-2" class="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand/5 dark:bg-brand/10 blur-[100px] rounded-full transition-transform duration-1000 ease-out"></div>
+    <!-- Mouse Follower Glow -->
+    <div id="cursor-glow" class="absolute w-[400px] h-[400px] bg-brand/5 blur-[100px] rounded-full opacity-0 transition-opacity duration-300"></div>
+</div>
+
+<!-- Navbar -->
+<nav class="border-b border-gray-200 dark:border-white/10 bg-white/50 dark:bg-black/50 backdrop-blur-xl fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-2">
+            <div class="w-7 h-7 bg-brand rounded flex items-center justify-center text-white shadow-[0_0_15px_rgba(0,211,127,0.3)]">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M12 2l2.4 7.6H22l-6.2 4.4 2.4 7.6-6.2-4.4-6.2 4.4 2.4-7.6-6.2-4.4h7.6z"/>
+                </svg>
+            </div>
+            <span class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">The Bridge</span>
+        </a>
+
+        <div class="flex items-center gap-4">
+            <button onclick="toggleTheme()" class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition p-2" aria-label="Toggle Theme">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden dark:block">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M3 12h2.25m.386-6.364l1.591-1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 dark:hidden">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div id="login-card" class="max-w-md w-full bg-white dark:bg-white/5 backdrop-blur-2xl border border-gray-200 dark:border-white/10 rounded-[2.5rem] p-10 md:p-14 shadow-2xl relative z-10 opacity-0 translate-y-8 transition-all duration-1000 ease-out hover:border-gray-300 dark:hover:border-white/20">
+    <!-- Inline Theme Toggle for "This Section" -->
+    <div class="absolute top-8 right-8">
+        <button onclick="toggleTheme()" class="p-3 bg-gray-100 dark:bg-white/10 rounded-2xl text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all shadow-sm border border-gray-200 dark:border-white/10 group/toggle" aria-label="Toggle Theme">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden dark:block group-hover/toggle:rotate-12 transition-transform">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M3 12h2.25m.386-6.364l1.591-1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 dark:hidden group-hover/toggle:-rotate-12 transition-transform">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+            </svg>
+        </button>
+    </div>
+    <!-- Tab Switcher -->
+    <div class="flex bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl p-1 mb-10">
+        <a href="/portal/login" class="flex-1 text-center py-2.5 text-sm font-black rounded-xl bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow transition-all">Sign In</a>
+        <a href="/portal/signup" class="flex-1 text-center py-2.5 text-sm font-black rounded-xl text-gray-500 hover:text-gray-900 dark:hover:text-white transition-all">Join Network</a>
+    </div>
+    <div class="text-center mb-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-brand/10 rounded-2xl mb-6 border border-brand/20 group hover:scale-110 hover:rotate-3 transition-all duration-500 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-brand group-hover:text-brandhover" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+            </svg>
+        </div>
+        <h2 class="text-4xl font-black tracking-tight mb-3 text-gray-900 dark:text-transparent dark:bg-gradient-to-r dark:from-white dark:via-white dark:to-white/50 dark:bg-clip-text">Talent Sign In</h2>
+        <p class="text-gray-500 dark:text-gray-400 font-medium tracking-wide uppercase text-xs">Access your portal dashboard</p>
+    </div>
+
+    {% if error %}
+    <div class="mb-4 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-sm text-center font-semibold">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form class="space-y-6" action="/portal/login" method="POST">
+        <div class="space-y-2 group">
+            <label for="email" class="text-xs font-black text-gray-500 uppercase tracking-widest ml-1 group-focus-within:text-brand transition-colors">Email Address</label>
+            <div class="relative">
+                <input id="email" name="email" type="email" required class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-brand/20 focus:border-brand hover:border-gray-300 dark:hover:border-white/20 outline-none transition-all" placeholder="your@email.com">
+                <div class="absolute inset-0 rounded-2xl bg-brand/5 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity"></div>
+            </div>
+        </div>
+        <div class="space-y-2 group">
+            <label for="password" class="text-xs font-black text-gray-500 uppercase tracking-widest ml-1 group-focus-within:text-brand transition-colors">Password</label>
+            <div class="relative">
+                <input id="password" name="password" type="password" required class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-brand/20 focus:border-brand hover:border-gray-300 dark:hover:border-white/20 outline-none transition-all" placeholder="••••••••">
+                <div class="absolute inset-0 rounded-2xl bg-brand/5 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity"></div>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-between px-1">
+            <label class="flex items-center gap-2 cursor-pointer group">
+                <input type="checkbox" class="w-4 h-4 rounded border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 text-brand focus:ring-brand/20">
+                <span class="text-xs text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">Remember me</span>
+            </label>
+            <a href="#" class="text-xs text-brand hover:text-brandhover font-bold transition-colors">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="group/btn w-full bg-brand hover:bg-brandhover text-white font-black py-5 rounded-[1.5rem] transition-all transform hover:scale-[1.02] active:scale-95 shadow-xl shadow-brand/20 flex items-center justify-center gap-2 overflow-hidden relative">
+            <span class="relative z-10">Sign In to Portal</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 relative z-10 group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite] pointer-events-none"></div>
+        </button>
+    </form>
+
+    <div class="mt-8 text-center animate-in fade-in duration-1000">
+        <p class="text-gray-500 dark:text-gray-400 text-sm">
+            Not part of the talent network? 
+            <a href="/portal/signup" class="text-brand hover:text-brandhover font-bold ml-1 transition-colors">Join Us Here</a>
+        </p>
+    </div>
+</div>
+
+<style>
+    @keyframes shimmer {
+        100% { transform: translateX(100%); }
+    }
+    
+    .animate-in {
+        animation-fill-mode: forwards;
+    }
+    
+    .fade-in { animation: fadeIn 0.8s ease-out; }
+    .slide-in-from-bottom-4 { animation: slideIn 0.8s ease-out; }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideIn {
+        from { transform: translateY(1rem); }
+        to { transform: translateY(0); }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const card = document.getElementById('login-card');
+        const cursorGlow = document.getElementById('cursor-glow');
+        const orb1 = document.getElementById('orb-1');
+        const orb2 = document.getElementById('orb-2');
+
+        // Initial entrance
+        setTimeout(() => {
+            card.classList.remove('opacity-0', 'translate-y-8');
+        }, 100);
+
+        // Interactive Cursor and Parallax
+        document.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            
+            // Move Cursor Glow
+            cursorGlow.style.left = `${clientX - 200}px`;
+            cursorGlow.style.top = `${clientY - 200}px`;
+            cursorGlow.style.opacity = '1';
+
+            // Parallax Orbs
+            const moveX = (clientX - window.innerWidth / 2) * 0.02;
+            const moveY = (clientY - window.innerHeight / 2) * 0.02;
+            
+            orb1.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            orb2.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
+
+            // Card Tilt Effect
+            const cardRect = card.getBoundingClientRect();
+            const cardX = clientX - (cardRect.left + cardRect.width / 2);
+            const cardY = clientY - (cardRect.top + cardRect.height / 2);
+            
+            // Only tilt if inside or near card
+            if (Math.abs(cardX) < 600 && Math.abs(cardY) < 600) {
+                const rotateY = cardX * 0.01;
+                const rotateX = -cardY * 0.01;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            } else {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            }
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursorGlow.style.opacity = '0';
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+        });
+    });
+</script>
+{% endblock %}

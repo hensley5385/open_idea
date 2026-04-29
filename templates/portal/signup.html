@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% block title %}Freelancer Signup - The Bridge{% endblock %}
+
+{% block body_class %}bg-white dark:bg-[#050505] text-gray-900 dark:text-white flex items-center justify-center min-h-screen pt-24 pb-10 px-6 selection:bg-brand selection:text-black transition-colors duration-500{% endblock %}
+
+{% block content %}
+<!-- Background Glow & Interactive Elements -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <!-- Dynamic Orbs -->
+    <div id="orb-1" class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600/5 dark:bg-purple-600/10 blur-[120px] rounded-full transition-transform duration-1000 ease-out"></div>
+    <div id="orb-2" class="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand/5 dark:bg-brand/10 blur-[100px] rounded-full transition-transform duration-1000 ease-out"></div>
+    <!-- Mouse Follower Glow -->
+    <div id="cursor-glow" class="absolute w-[400px] h-[400px] bg-brand/5 blur-[100px] rounded-full opacity-0 transition-opacity duration-300"></div>
+</div>
+
+<!-- Navbar -->
+<nav class="border-b border-gray-200 dark:border-white/10 bg-white/50 dark:bg-black/50 backdrop-blur-xl fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-2">
+            <div class="w-7 h-7 bg-brand rounded flex items-center justify-center text-white shadow-[0_0_15px_rgba(0,211,127,0.3)]">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M12 2l2.4 7.6H22l-6.2 4.4 2.4 7.6-6.2-4.4-6.2 4.4 2.4-7.6-6.2-4.4h7.6z"/>
+                </svg>
+            </div>
+            <span class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">The Bridge</span>
+        </a>
+
+        <div class="flex items-center gap-4">
+            <button onclick="toggleTheme()" class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition p-2" aria-label="Toggle Theme">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden dark:block">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M3 12h2.25m.386-6.364l1.591-1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 dark:hidden">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div id="signup-card" class="max-w-2xl w-full bg-white dark:bg-white/5 backdrop-blur-2xl border border-gray-200 dark:border-white/10 rounded-[2.5rem] p-10 md:p-14 shadow-2xl relative z-10 opacity-0 translate-y-8 transition-all duration-1000 ease-out hover:border-gray-300 dark:hover:border-white/20">
+    <!-- Inline Theme Toggle for "This Section" -->
+    <div class="absolute top-8 right-8">
+        <button onclick="toggleTheme()" class="p-3 bg-gray-100 dark:bg-white/10 rounded-2xl text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all shadow-sm border border-gray-200 dark:border-white/10 group/toggle" aria-label="Toggle Theme">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden dark:block group-hover/toggle:rotate-12 transition-transform">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M3 12h2.25m.386-6.364l1.591-1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 dark:hidden group-hover/toggle:-rotate-12 transition-transform">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+            </svg>
+        </button>
+    </div>
+    <!-- Tab Switcher -->
+    <div class="flex bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl p-1 mb-10">
+        <a href="/portal/login" class="flex-1 text-center py-2.5 text-sm font-black rounded-xl text-gray-500 hover:text-gray-900 dark:hover:text-white transition-all">Sign In</a>
+        <a href="/portal/signup" class="flex-1 text-center py-2.5 text-sm font-black rounded-xl bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow transition-all">Join Network</a>
+    </div>
+    <div class="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-600/10 rounded-2xl mb-6 border border-purple-500/20 group hover:scale-110 hover:rotate-3 transition-all duration-500 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-600 dark:text-purple-500 group-hover:text-purple-500 dark:group-hover:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+            </svg>
+        </div>
+        <h2 class="text-4xl font-black tracking-tight mb-3 text-gray-900 dark:text-transparent dark:bg-gradient-to-r dark:from-white dark:via-white dark:to-white/50 dark:bg-clip-text">Join the Talent Network</h2>
+        <p class="text-gray-500 dark:text-gray-400 font-medium tracking-wide uppercase text-xs">Phase 3: Active Sourcing Initiative</p>
+    </div>
+
+    <form class="space-y-8" action="/portal/signup" method="POST" enctype="multipart/form-data">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-2 group">
+                <label for="name" class="text-xs font-black text-gray-500 uppercase tracking-widest ml-1 group-focus-within:text-brand transition-colors">Full Name</label>
+                <div class="relative">
+                    <input id="name" name="name" type="text" required class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-brand/20 focus:border-brand hover:border-gray-300 dark:hover:border-white/20 outline-none transition-all" placeholder="John Doe">
+                    <div class="absolute inset-0 rounded-2xl bg-brand/5 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity"></div>
+                </div>
+            </div>
+            <div class="space-y-2 group">
+                <label for="email" class="text-xs font-black text-gray-500 uppercase tracking-widest ml-1 group-focus-within:text-brand transition-colors">Email Address</label>
+                <div class="relative">
+                    <input id="email" name="email" type="email" required class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-brand/20 focus:border-brand hover:border-gray-300 dark:hover:border-white/20 outline-none transition-all" placeholder="john@example.com">
+                    <div class="absolute inset-0 rounded-2xl bg-brand/5 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity"></div>
+                </div>
+            </div>
+            <div class="space-y-2 group">
+                <label for="password" class="text-xs font-black text-gray-500 uppercase tracking-widest ml-1 group-focus-within:text-brand transition-colors">Password</label>
+                <div class="relative">
+                    <input id="password" name="password" type="password" required class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-brand/20 focus:border-brand hover:border-gray-300 dark:hover:border-white/20 outline-none transition-all" placeholder="••••••••">
+                    <div class="absolute inset-0 rounded-2xl bg-brand/5 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-2 group">
+                <label for="gender" class="text-xs font-black text-gray-500 uppercase tracking-widest ml-1 group-focus-within:text-brand transition-colors">Gender</label>
+                <div class="relative">
+                    <select id="gender" name="gender" class="w-full bg-gray-50 dark:bg-[#0A0A0A] border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-4 text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand hover:border-gray-300 dark:hover:border-white/20 transition-all appearance-none cursor-pointer">
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                        <option>Prefer not to say</option>
+                    </select>
+                    <div class="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 dark:text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-2 group">
+                <label for="whatsapp" class="text-xs font-black text-gray-500 uppercase tracking-widest ml-1 group-focus-within:text-brand transition-colors">WhatsApp Number</label>
+                <div class="relative">
+                    <input id="whatsapp" name="whatsapp" type="text" required class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-brand/20 focus:border-brand hover:border-gray-300 dark:hover:border-white/20 outline-none transition-all" placeholder="+1234567890">
+                    <div class="absolute inset-0 rounded-2xl bg-brand/5 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="space-y-2 group">
+            <label for="primary_skill" class="text-xs font-black text-gray-500 uppercase tracking-widest ml-1 group-focus-within:text-brand transition-colors">Primary Skill</label>
+            <div class="relative">
+                <input list="skills-list" id="primary_skill" name="primary_skill" 
+                       class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-brand/20 focus:border-brand hover:border-gray-300 dark:hover:border-white/20 outline-none transition-all" 
+                       placeholder="Search skills..."
+                       oninput="checkCustomSkill(this)">
+                <div class="absolute inset-0 rounded-2xl bg-brand/5 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity"></div>
+            </div>
+            <datalist id="skills-list">
+                <option value="Logo Designer">
+                <option value="Web Developer">
+                <option value="Copywriter">
+                <option value="SEO Specialist">
+                <option value="UI/UX Designer">
+                <option value="Other / Custom">
+            </datalist>
+            
+            <div id="custom-skill-container" class="mt-4 hidden animate-in fade-in zoom-in-95 duration-300">
+                <input id="custom_skill" name="custom_skill" type="text" class="w-full bg-gray-50 dark:bg-white/5 border border-brand/30 rounded-2xl px-5 py-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all" placeholder="Specify your skill">
+            </div>
+        </div>
+
+        <div class="space-y-2 group">
+            <label for="bank_details" class="text-xs font-black text-gray-500 uppercase tracking-widest ml-1 group-focus-within:text-brand transition-colors">Bank Details (Payouts)</label>
+            <div class="relative">
+                <textarea id="bank_details" name="bank_details" rows="2" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-brand/20 focus:border-brand hover:border-gray-300 dark:hover:border-white/20 outline-none transition-all resize-none" placeholder="Bank Name, Account Number, SWIFT/IBAN"></textarea>
+                <div class="absolute inset-0 rounded-2xl bg-brand/5 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity"></div>
+            </div>
+        </div>
+
+        <div class="space-y-2">
+            <label class="text-xs font-black text-gray-500 uppercase tracking-widest ml-1">Certifications (Optional)</label>
+            <div class="mt-1 flex justify-center px-6 pt-10 pb-10 border-2 border-gray-200 dark:border-white/10 border-dashed rounded-[2rem] hover:border-brand/50 hover:bg-brand/5 transition-all cursor-pointer group/upload relative overflow-hidden" onclick="document.getElementById('certifications').click()">
+                <div class="absolute inset-0 bg-brand/5 opacity-0 group-hover/upload:opacity-100 transition-opacity"></div>
+                <div class="space-y-4 text-center relative z-10">
+                    <div class="w-16 h-16 bg-gray-100 dark:bg-white/5 rounded-2xl flex items-center justify-center mx-auto group-hover/upload:scale-110 group-hover/upload:rotate-6 transition-all duration-500 border border-gray-200 dark:border-white/5 group-hover/upload:border-brand/20 shadow-xl">
+                        <svg class="h-8 w-8 text-gray-400 dark:text-gray-500 group-hover/upload:text-brand transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                        <span class="text-brand font-bold">Upload a file</span> or drag and drop
+                        <input id="certifications" name="certifications" type="file" class="sr-only">
+                    </div>
+                    <p class="text-[10px] text-gray-400 dark:text-gray-600 font-bold uppercase tracking-widest">PDF, PNG, JPG up to 10MB</p>
+                </div>
+            </div>
+            <p id="file-chosen" class="mt-3 text-xs text-brand font-bold text-center animate-pulse"></p>
+        </div>
+
+        <button type="submit" class="group/btn w-full bg-brand hover:bg-brandhover text-white font-black py-5 rounded-[1.5rem] transition-all transform hover:scale-[1.02] active:scale-95 shadow-xl shadow-brand/20 flex items-center justify-center gap-2 overflow-hidden relative">
+            <span class="relative z-10">Complete Signup</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 relative z-10 group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite] pointer-events-none"></div>
+        </button>
+
+        <p class="text-center text-sm font-bold text-gray-500 mt-6">
+            Already have an account? 
+            <a href="/portal/login" class="text-brand hover:text-brandhover underline-offset-4 hover:underline transition-all">Sign In</a>
+        </p>
+    </form>
+</div>
+
+<style>
+    @keyframes shimmer {
+        100% { transform: translateX(100%); }
+    }
+    
+    .animate-in {
+        animation-fill-mode: forwards;
+    }
+    
+    .fade-in { animation: fadeIn 0.8s ease-out; }
+    .slide-in-from-bottom-4 { animation: slideIn 0.8s ease-out; }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideIn {
+        from { transform: translateY(1rem); }
+        to { transform: translateY(0); }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const card = document.getElementById('signup-card');
+        const cursorGlow = document.getElementById('cursor-glow');
+        const orb1 = document.getElementById('orb-1');
+        const orb2 = document.getElementById('orb-2');
+
+        // Initial entrance
+        setTimeout(() => {
+            card.classList.remove('opacity-0', 'translate-y-8');
+        }, 100);
+
+        // Interactive Cursor and Parallax
+        document.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            
+            // Move Cursor Glow
+            cursorGlow.style.left = `${clientX - 200}px`;
+            cursorGlow.style.top = `${clientY - 200}px`;
+            cursorGlow.style.opacity = '1';
+
+            // Parallax Orbs
+            const moveX = (clientX - window.innerWidth / 2) * 0.02;
+            const moveY = (clientY - window.innerHeight / 2) * 0.02;
+            
+            orb1.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            orb2.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
+
+            // Card Tilt Effect
+            const cardRect = card.getBoundingClientRect();
+            const cardX = clientX - (cardRect.left + cardRect.width / 2);
+            const cardY = clientY - (cardRect.top + cardRect.height / 2);
+            
+            // Only tilt if inside or near card
+            if (Math.abs(cardX) < 600 && Math.abs(cardY) < 600) {
+                const rotateY = cardX * 0.01;
+                const rotateX = -cardY * 0.01;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            } else {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            }
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursorGlow.style.opacity = '0';
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+        });
+    });
+
+    function checkCustomSkill(input) {
+        const container = document.getElementById('custom-skill-container');
+        if (input.value === 'Other / Custom') {
+            container.classList.remove('hidden');
+        } else {
+            container.classList.add('hidden');
+        }
+    }
+
+    document.getElementById('certifications').addEventListener('change', function() {
+        if (this.files && this.files.length > 0) {
+            document.getElementById('file-chosen').textContent = 'Selected: ' + this.files[0].name;
+        }
+    });
+</script>
+{% endblock %}

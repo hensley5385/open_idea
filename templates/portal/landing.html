@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+
+{% block title %}Freelancer Portal - The Bridge Talent Network{% endblock %}
+
+{% block body_class %}bg-white dark:bg-[#050505] text-gray-900 dark:text-white overflow-x-hidden transition-colors duration-500{% endblock %}
+
+{% block content %}
+<!-- Background -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div id="orb-1" class="absolute top-[-5%] right-[-5%] w-[55%] h-[55%] bg-purple-600/10 dark:bg-purple-600/10 blur-[140px] rounded-full transition-transform duration-1000 ease-out"></div>
+    <div id="orb-2" class="absolute bottom-[-10%] left-[-10%] w-[45%] h-[45%] bg-brand/10 dark:bg-brand/8 blur-[120px] rounded-full transition-transform duration-1000 ease-out"></div>
+    <div id="cursor-glow" class="absolute w-[500px] h-[500px] bg-purple-500/5 blur-[120px] rounded-full opacity-0 transition-opacity duration-500 pointer-events-none"></div>
+</div>
+
+<!-- Navbar -->
+<nav class="border-b border-gray-200 dark:border-white/5 bg-white/40 dark:bg-black/40 backdrop-blur-xl fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-2.5">
+            <div class="w-7 h-7 bg-brand rounded-lg flex items-center justify-center text-white shadow-[0_0_15px_rgba(0,211,127,0.3)]">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M12 2l2.4 7.6H22l-6.2 4.4 2.4 7.6-6.2-4.4-6.2 4.4 2.4-7.6-6.2-4.4h7.6z"/>
+                </svg>
+            </div>
+            <span class="text-lg font-bold tracking-tight text-gray-900 dark:text-white">The Bridge</span>
+        </a>
+        
+        <!-- Desktop Links -->
+        <div class="hidden md:flex items-center gap-6">
+            <button onclick="toggleTheme()" class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition p-2" aria-label="Toggle Theme">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden dark:block">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M3 12h2.25m.386-6.364l1.591-1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 dark:hidden">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+            </button>
+            <a href="/portal/login" class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-medium transition">Sign In</a>
+            <a href="/portal/signup" class="bg-brand hover:bg-brandhover text-white text-sm font-bold px-5 py-2 rounded-full transition shadow-[0_0_20px_rgba(0,211,127,0.3)] hover:shadow-[0_0_30px_rgba(0,211,127,0.5)]">
+                Join Us
+            </a>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <div class="flex md:hidden items-center gap-4">
+            <button onclick="toggleTheme()" class="text-gray-500 dark:text-gray-400 p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden dark:block">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M3 12h2.25m.386-6.364l1.591-1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 dark:hidden">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+            </button>
+            <button id="mobile-menu-btn" class="text-gray-500 dark:text-gray-400 p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Drawer -->
+    <div id="mobile-menu" class="hidden fixed inset-0 z-50 bg-white dark:bg-[#050505] p-6 flex flex-col gap-8 transition-all duration-300">
+        <div class="flex justify-between items-center">
+            <span class="text-lg font-bold text-gray-900 dark:text-white">Menu</span>
+            <button id="close-menu-btn" class="text-gray-500 dark:text-gray-400 p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="flex flex-col gap-6 text-center">
+            <a href="/portal/login" class="text-xl font-bold text-gray-900 dark:text-white py-4 border-b border-gray-100 dark:border-white/5">Sign In</a>
+            <a href="/portal/signup" class="text-xl font-bold text-brand py-4 border-b border-gray-100 dark:border-white/5">Join Network</a>
+            <a href="/" class="text-sm font-medium text-gray-500 dark:text-gray-400">Back to Storefront</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="relative min-h-[90vh] flex items-center justify-center px-6 pt-32 pb-20">
+    <div class="max-w-5xl mx-auto text-center">
+        <div id="hero-badge" class="inline-flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 rounded-full px-4 py-2 mb-8 opacity-0 translate-y-4 transition-all duration-700">
+            <div class="w-1.5 h-1.5 bg-purple-500 rounded-full animate-pulse"></div>
+            <span class="text-[10px] sm:text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-widest">Now Hiring — Phase 3 Active</span>
+        </div>
+
+        <h1 id="hero-title" class="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight leading-tight mb-8 opacity-0 translate-y-6 transition-all duration-700 delay-100 text-gray-900 dark:text-white">
+            Get Paid to Do<br>
+            <span class="bg-gradient-to-r from-brand via-purple-500 dark:via-purple-400 to-brand bg-clip-text text-transparent animate-pulse">What You Love</span>
+        </h1>
+
+        <p id="hero-sub" class="text-base sm:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed opacity-0 translate-y-6 transition-all duration-700 delay-200 font-medium px-4">
+            Join our elite talent network and connect with high-paying clients worldwide. 
+            We handle the sales. You handle the craft.
+        </p>
+
+        <div id="hero-cta" class="flex flex-col sm:flex-row gap-4 justify-center items-center opacity-0 translate-y-6 transition-all duration-700 delay-300">
+            <a href="/portal/signup" class="w-full sm:w-auto group bg-brand hover:bg-brandhover text-white font-black px-10 py-4 rounded-full transition-all duration-300 hover:scale-105 shadow-[0_0_30px_rgba(0,211,127,0.3)] hover:shadow-[0_0_50px_rgba(0,211,127,0.5)] flex items-center justify-center gap-2 text-base">
+                Join the Network
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </a>
+            <a href="/portal/login" class="text-sm font-bold text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition flex items-center gap-2 py-2">
+                Already a member? Sign In
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+
+        <!-- Stats Row -->
+        <div id="hero-stats" class="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-xl mx-auto mt-20 opacity-0 translate-y-6 transition-all duration-700 delay-500">
+            <div class="text-center">
+                <div class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white mb-1">$2.4M+</div>
+                <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Paid Out</div>
+            </div>
+            <div class="text-center border-y sm:border-y-0 sm:border-x border-gray-200 dark:border-white/5 py-6 sm:py-0">
+                <div class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white mb-1">350+</div>
+                <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Freelancers</div>
+            </div>
+            <div class="text-center">
+                <div class="text-2xl sm:text-3xl font-black text-gray-900 dark:text-white mb-1">95%</div>
+                <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Satisfaction</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce opacity-40">
+        <span class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Scroll</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="max-w-7xl mx-auto px-6 py-20 sm:py-28">
+    <div class="text-center mb-16 sm:mb-20">
+        <p class="text-[10px] sm:text-xs font-black text-brand uppercase tracking-[0.3em] mb-4">Simple Process</p>
+        <h2 class="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white px-4">Start earning in 3 steps</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        <!-- Step 1 -->
+        <div class="group relative bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2rem] p-8 sm:p-10 hover:border-brand/30 transition-all duration-500 hover:-translate-y-2 overflow-hidden shadow-xl dark:shadow-none">
+            <div class="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="text-4xl sm:text-5xl font-black text-gray-100 dark:text-white/5 mb-6 relative z-10">01</div>
+            <div class="w-12 h-12 bg-brand/10 border border-brand/20 rounded-2xl flex items-center justify-center text-brand mb-6 group-hover:scale-110 transition-transform relative z-10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+            </div>
+            <h3 class="text-xl font-black text-gray-900 dark:text-white mb-3 relative z-10">Join the Network</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed relative z-10 font-medium">Sign up with your skills, experience, and portfolio. Our team reviews every application within 48 hours.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="group relative bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2rem] p-8 sm:p-10 hover:border-purple-500/30 transition-all duration-500 hover:-translate-y-2 overflow-hidden shadow-xl dark:shadow-none">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="text-4xl sm:text-5xl font-black text-gray-100 dark:text-white/5 mb-6 relative z-10">02</div>
+            <div class="w-12 h-12 bg-purple-500/10 border border-purple-500/20 rounded-2xl flex items-center justify-center text-purple-600 dark:text-purple-400 mb-6 group-hover:scale-110 transition-transform relative z-10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <h3 class="text-xl font-black text-gray-900 dark:text-white mb-3 relative z-10">Get Matched to Projects</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed relative z-10 font-medium">We match you with clients based on your skills. No cold pitching. No bidding wars. Just great work.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="group relative bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-[2rem] p-8 sm:p-10 hover:border-amber-500/30 transition-all duration-500 hover:-translate-y-2 overflow-hidden shadow-xl dark:shadow-none">
+            <div class="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="text-4xl sm:text-5xl font-black text-gray-100 dark:text-white/5 mb-6 relative z-10">03</div>
+            <div class="w-12 h-12 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-center text-amber-600 dark:text-amber-400 mb-6 group-hover:scale-110 transition-transform relative z-10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h3 class="text-xl font-black text-gray-900 dark:text-white mb-3 relative z-10">Deliver & Get Paid</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed relative z-10 font-medium">Complete the work, we handle invoicing and collect payment. Funds are deposited directly to your account.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Perks Section -->
+<section class="border-t border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-white/[0.02]">
+    <div class="max-w-7xl mx-auto px-6 py-20 sm:py-28">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div>
+                <p class="text-[10px] sm:text-xs font-black text-purple-600 dark:text-purple-400 uppercase tracking-[0.3em] mb-4">Why Join Us</p>
+                <h2 class="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white mb-8 leading-tight">We treat freelancers<br class="hidden sm:block">like partners.</h2>
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4 group">
+                        <div class="w-10 h-10 bg-brand/10 border border-brand/20 rounded-xl flex items-center justify-center text-brand shrink-0 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-black text-gray-900 dark:text-white mb-1 text-sm sm:text-base">Guaranteed Payments</h4>
+                            <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm leading-relaxed font-medium">Every project is backed by client escrow. You always get paid for completed work.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 group">
+                        <div class="w-10 h-10 bg-purple-500/10 border border-purple-500/20 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400 shrink-0 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-black text-gray-900 dark:text-white mb-1 text-sm sm:text-base">No Bidding, No Cold Outreach</h4>
+                            <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm leading-relaxed font-medium">We source clients and match them directly to you. Focus on work, not hustle.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 group">
+                        <div class="w-10 h-10 bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-black text-gray-900 dark:text-white mb-1 text-sm sm:text-base">Flexible Schedule</h4>
+                            <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm leading-relaxed font-medium">Work from anywhere, anytime. You set your availability and we work around you.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 group">
+                        <div class="w-10 h-10 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 shrink-0 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-black text-gray-900 dark:text-white mb-1 text-sm sm:text-base">Dedicated Support Team</h4>
+                            <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm leading-relaxed font-medium">A real team member manages your account and is always available on WhatsApp.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Grid -->
+            <div class="grid grid-cols-2 gap-3 sm:gap-4 mt-8 lg:mt-0">
+                {% set skills = [
+                    ("Web Development", "bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400"),
+                    ("UI/UX Design", "bg-purple-500/10 border-purple-500/20 text-purple-600 dark:text-purple-400"),
+                    ("Logo Design", "bg-pink-500/10 border-pink-500/20 text-pink-600 dark:text-pink-400"),
+                    ("Copywriting", "bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400"),
+                    ("SEO Strategy", "bg-brand/10 border-brand/20 text-brand"),
+                    ("Video Editing", "bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-400"),
+                    ("Social Media", "bg-indigo-500/10 border-indigo-500/20 text-indigo-600 dark:text-indigo-400"),
+                    ("Data Analysis", "bg-teal-500/10 border-teal-500/20 text-teal-600 dark:text-teal-400"),
+                ] %}
+                {% for skill, classes in skills %}
+                <div class="border {{ classes }} rounded-xl sm:rounded-2xl p-4 sm:p-5 hover:scale-105 transition-transform duration-300 cursor-default shadow-sm dark:shadow-none text-center">
+                    <span class="text-xs sm:text-sm font-black">{{ skill }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA -->
+<section class="max-w-7xl mx-auto px-6 py-20 sm:py-28">
+    <div class="relative bg-gradient-to-br from-purple-100 via-white to-brand/10 dark:from-purple-900/40 dark:via-black dark:to-brand/10 border border-gray-200 dark:border-white/10 rounded-[2rem] sm:rounded-[3rem] p-10 sm:p-16 md:p-24 text-center overflow-hidden shadow-2xl dark:shadow-none">
+        <!-- glow -->
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-brand/5 rounded-[3rem] pointer-events-none"></div>
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-brand/10 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-600/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+        <p class="text-[10px] sm:text-xs text-brand font-black uppercase tracking-[0.3em] mb-6 relative z-10">Ready to start?</p>
+        <h2 class="text-3xl sm:text-4xl md:text-6xl font-black text-gray-900 dark:text-white mb-6 relative z-10 leading-tight">
+            Your skills deserve<br class="hidden sm:block">better opportunities.
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400 text-sm sm:text-lg mb-10 sm:mb-12 max-w-xl mx-auto relative z-10 font-medium px-4">
+            Join hundreds of top freelancers already earning more with The Bridge. Applications take 5 minutes.
+        </p>
+        <a href="/portal/signup" class="w-full sm:w-auto group inline-flex items-center justify-center gap-3 bg-brand hover:bg-brandhover text-white font-black px-10 sm:px-12 py-4 sm:py-5 rounded-full text-base sm:text-lg transition-all duration-300 hover:scale-105 shadow-[0_0_40px_rgba(0,211,127,0.4)] hover:shadow-[0_0_60px_rgba(0,211,127,0.6)] relative z-10">
+            Apply Now — It's Free
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+
+        <p class="mt-8 text-[10px] sm:text-xs text-gray-500 relative z-10 font-bold uppercase tracking-widest">Already a member? <a href="/portal/login" class="text-brand hover:text-brandhover transition">Sign In</a></p>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="border-t border-gray-200 dark:border-white/5 py-10">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500 dark:text-gray-600 font-bold uppercase tracking-widest">
+        <span>&copy; 2026 The Bridge. All rights reserved.</span>
+        <div class="flex gap-6">
+            <a href="/" class="hover:text-gray-900 dark:hover:text-white transition">Client Side</a>
+            <a href="/explore" class="hover:text-gray-900 dark:hover:text-white transition">Services</a>
+            <a href="/portal/login" class="hover:text-gray-900 dark:hover:text-white transition">Sign In</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            document.body.style.overflow = '';
+        });
+
+        // Entrance animations
+        const els = ['hero-badge', 'hero-title', 'hero-sub', 'hero-cta', 'hero-stats'];
+        els.forEach((id, i) => {
+            setTimeout(() => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('opacity-0', 'translate-y-4', 'translate-y-6');
+            }, i * 120);
+        });
+
+        // Cursor glow + orb parallax
+        const cursorGlow = document.getElementById('cursor-glow');
+        const orb1 = document.getElementById('orb-1');
+        const orb2 = document.getElementById('orb-2');
+
+        const updateOrbs = (clientX, clientY) => {
+            cursorGlow.style.left = `${clientX - 250}px`;
+            cursorGlow.style.top = `${clientY - 250}px`;
+            cursorGlow.style.opacity = '1';
+
+            const moveX = (clientX - window.innerWidth / 2) * 0.015;
+            const moveY = (clientY - window.innerHeight / 2) * 0.015;
+            orb1.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            orb2.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
+        };
+
+        document.addEventListener('mousemove', (e) => {
+            updateOrbs(e.clientX, e.clientY);
+        });
+
+        // Interactive resize effect
+        window.addEventListener('resize', () => {
+            // Reposition orbs slightly on resize to feel "alive"
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            orb1.style.transform = `translate(${centerX * 0.01}px, ${centerY * 0.01}px) scale(${1 + window.innerWidth * 0.0001})`;
+            orb2.style.transform = `translate(${-centerX * 0.01}px, ${-centerY * 0.01}px) scale(${1 + window.innerWidth * 0.0001})`;
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursorGlow.style.opacity = '0';
+        });
+    });
+</script>
+{% endblock %}

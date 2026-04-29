@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+
+{% block title %}Freelancer Dashboard - The Bridge{% endblock %}
+
+{% block body_class %}bg-gray-100 dark:bg-[#050505] text-gray-800 dark:text-white min-h-screen overflow-x-hidden{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<nav class="border-b border-gray-200/80 dark:border-white/5 bg-white/80 dark:bg-[#0A0A0A]/80 backdrop-blur-xl sticky top-0 z-50 transition-all duration-300">
+    <div class="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-2.5">
+            <div class="w-8 h-8 bg-brand rounded-lg flex items-center justify-center text-white shadow-[0_0_20px_rgba(0,211,127,0.3)]">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M12 2l2.4 7.6H22l-6.2 4.4 2.4 7.6-6.2-4.4-6.2 4.4 2.4-7.6-6.2-4.4h7.6z"/>
+                </svg>
+            </div>
+            <span class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">The Bridge</span>
+        </a>
+        
+        <!-- Mode Toggle & Links -->
+        <div class="flex items-center gap-10">
+            <div class="hidden md:flex items-center gap-8">
+                <a href="/explore" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Explore</a>
+                <div class="flex bg-gray-100 dark:bg-white/5 p-1 rounded-full border border-gray-200 dark:border-white/5">
+                    <a href="/dashboard" class="px-4 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-full text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Client</a>
+                    <a href="/portal/dashboard" class="px-4 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-full bg-white dark:bg-emerald-500 text-gray-900 dark:text-white shadow-sm dark:shadow-lg transition-all duration-300">Freelancer</a>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button onclick="toggleTheme()" class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden dark:block">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M3 12h2.25m.386-6.364l1.591-1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 dark:hidden">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                    </svg>
+                </button>
+                <div class="flex items-center gap-3 mr-4">
+                    <div class="w-8 h-8 rounded-full bg-brand/20 flex items-center justify-center text-brand border border-brand/30">
+                        <span class="text-xs font-bold">{{ user.name[:1] if user else 'F' }}</span>
+                    </div>
+                    <span class="text-sm font-bold text-gray-700 dark:text-gray-300">{{ user.name if user else 'Freelancer' }}</span>
+                </div>
+                <a href="/portal/logout" class="text-gray-500 dark:text-gray-400 hover:text-red-500 transition text-sm font-bold">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-[1400px] mx-auto px-6 py-10">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
+        <div class="flex items-center gap-5">
+            <div class="w-14 h-14 bg-purple-600 rounded-2xl flex items-center justify-center text-white shadow-[0_0_30px_rgba(147,51,234,0.3)]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <div>
+                <div class="flex items-center gap-3 mb-1">
+                    <h1 class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">Freelancer Dashboard</h1>
+                    <span class="px-2.5 py-0.5 bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase tracking-wider rounded border border-purple-500/20">Freelancer Mode</span>
+                </div>
+                <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Manage your active projects and find new opportunities.</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <!-- Tab Switcher -->
+            <div class="flex bg-gray-100 dark:bg-white/5 p-1 rounded-full border border-gray-200 dark:border-white/5">
+                <a href="/portal/dashboard" class="px-4 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-full bg-white dark:bg-white/10 text-gray-900 dark:text-white shadow-sm transition-all">Dashboard</a>
+                <a href="/portal/profile" class="px-4 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-full text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Profile</a>
+            </div>
+
+            <div class="flex items-center gap-2.5 bg-white/5 border border-white/5 px-4 py-2.5 rounded-full">
+                <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                <span class="text-[11px] font-bold text-gray-600 dark:text-gray-300 tracking-wide">Live Connection</span>
+            </div>
+            <button class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 border border-amber-500/20 px-6 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:scale-110 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
+                </svg>
+                Go Premium
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <!-- Stat 1 -->
+        <div class="bg-white dark:bg-[#111111] border border-gray-200 dark:border-white/5 p-7 rounded-[1.5rem] relative overflow-hidden group hover:border-blue-500/30 transition-all duration-500">
+            <div class="flex justify-between items-start mb-6">
+                <p class="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">Active Projects</p>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500/50 group-hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+            </div>
+            <div class="text-4xl font-black text-gray-900 dark:text-white mb-2">{{ active_count }}</div>
+            <p class="text-[9px] font-bold text-gray-400 dark:text-gray-600 uppercase tracking-widest">Updated: <span class="text-blue-500/60">Just Now</span></p>
+        </div>
+        <!-- Stat 2 -->
+        <div class="bg-white dark:bg-[#111111] border border-gray-200 dark:border-white/5 p-7 rounded-[1.5rem] relative overflow-hidden group hover:border-emerald-500/30 transition-all duration-500">
+            <div class="flex justify-between items-start mb-6">
+                <p class="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">Total Earnings</p>
+                <span class="text-emerald-500/50 group-hover:text-emerald-500 transition-colors font-bold text-xl">$</span>
+            </div>
+            <div class="text-4xl font-black text-gray-900 dark:text-white mb-2">${{ total_earned }}</div>
+            <p class="text-[9px] font-bold text-gray-400 dark:text-gray-600 uppercase tracking-widest">Updated: <span class="text-emerald-500/60">Just Now</span></p>
+        </div>
+        <!-- Stat 3 -->
+        <div class="bg-white dark:bg-[#111111] border border-gray-200 dark:border-white/5 p-7 rounded-[1.5rem] relative overflow-hidden group hover:border-purple-500/30 transition-all duration-500">
+            <div class="flex justify-between items-start mb-6">
+                <p class="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">Completed</p>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-500/50 group-hover:text-purple-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <div class="text-4xl font-black text-gray-900 dark:text-white mb-2">{{ completed_count }}</div>
+            <p class="text-[9px] font-bold text-gray-400 dark:text-gray-600 uppercase tracking-widest">Updated: <span class="text-purple-500/60">Just Now</span></p>
+        </div>
+        <!-- Stat 4 -->
+        <div class="bg-white dark:bg-[#111111] border border-gray-200 dark:border-white/5 p-7 rounded-[1.5rem] relative overflow-hidden group hover:border-amber-500/30 transition-all duration-500">
+            <div class="flex justify-between items-start mb-6">
+                <p class="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">Unread</p>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-500/50 group-hover:text-amber-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+            </div>
+            <div class="text-4xl font-black text-gray-900 dark:text-white mb-2">{{ unread_messages }}</div>
+            <p class="text-[9px] font-bold text-gray-400 dark:text-gray-600 uppercase tracking-widest">Received: <span class="text-amber-500/60">Today</span></p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <!-- Main Content (Left 2/3) -->
+        <div class="lg:col-span-2 space-y-12">
+            <!-- Available Opportunities -->
+            <section>
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-2xl font-black tracking-tight text-gray-900 dark:text-white">Available Opportunities</h2>
+                    <div class="flex items-center gap-4">
+                        <button class="p-2 text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        </button>
+                        <button class="p-2 text-gray-500 hover:text-white transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {% for op in opportunities %}
+                    <div class="bg-white dark:bg-[#111111] border border-gray-200 dark:border-white/5 p-8 rounded-[2rem] hover:border-brand/20 transition-all duration-500 group">
+                        <div class="flex justify-between items-start mb-6">
+                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest rounded border border-emerald-500/20">Lead</span>
+                            <span class="text-xl font-black text-gray-900 dark:text-white">${{ op.source_price }}</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-brand transition-colors">{{ op.title }}</h3>
+                        <p class="text-xs text-gray-400 dark:text-gray-500 mb-6 font-medium">Source: <span class="text-gray-600 dark:text-gray-300">{{ op.client_contact }}</span></p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-8 leading-relaxed line-clamp-2">{{ op.description }}</p>
+                        <button class="w-full bg-gray-100 dark:bg-white text-black font-black py-4 rounded-2xl hover:bg-brand hover:text-white transition-all duration-300 shadow-xl">Contact Client</button>
+                    </div>
+                    {% endfor %}
+                    {% if not opportunities %}
+                    <div class="col-span-2 text-center py-10 text-gray-500 italic">No new opportunities at the moment.</div>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- Active Projects -->
+            <section>
+                <h2 class="text-2xl font-black tracking-tight mb-8">Active Projects</h2>
+                <div class="space-y-6">
+                    {% for task in active_tasks %}
+                    <div class="bg-white dark:bg-[#111111] border border-gray-200 dark:border-white/5 p-8 rounded-[2rem] relative group">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="px-2.5 py-0.5 bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-gray-400 text-[9px] font-black uppercase tracking-widest rounded">Project</span>
+                                    <span class="text-[9px] font-bold text-gray-400 dark:text-gray-600 uppercase tracking-widest">• Ongoing</span>
+                                </div>
+                                <a href="/portal/projects/{{ task.id }}" class="block text-xl font-bold mb-1 text-gray-900 dark:text-white hover:text-brand transition-colors">
+                                    {{ task.lead.title if task.lead else "Project" }}
+                                </a>
+                                <p class="text-xs text-gray-400 dark:text-gray-500 font-medium">Payout: <span class="text-emerald-500 dark:text-brand font-bold">${{ task.payout_price }}</span></p>
+                            </div>
+                            <button class="p-2 text-gray-400 dark:text-gray-600 hover:text-gray-900 dark:hover:text-white transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" /></svg>
+                            </button>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex justify-between text-xs font-black uppercase tracking-widest mb-2">
+                                <span class="text-gray-400">{{ task.status|capitalize }}</span>
+                                <span class="text-emerald-500 dark:text-brand progress-text">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-white/5 rounded-full h-2 relative overflow-hidden">
+                                <div class="bg-emerald-500 dark:bg-brand h-full rounded-full transition-all duration-1000 progress-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="flex items-center justify-between pt-4">
+                                <div class="flex-1 mr-6">
+                                    <input type="range" class="w-full h-1 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer accent-emerald-500 dark:accent-brand progress-slider" value="0">
+                                </div>
+                                <span class="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">Update Progress</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% if not active_tasks %}
+                    <div class="text-center py-10 bg-white/5 rounded-[2rem] border border-dashed border-white/10 text-gray-500 italic">No active projects assigned. Check opportunities!</div>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+
+        <!-- Sidebar Content (Right 1/3) -->
+        <div class="space-y-8">
+            <!-- Client Messages -->
+            <div class="bg-white dark:bg-[#111111] border border-gray-200 dark:border-white/5 rounded-[2rem] p-8">
+                <h2 class="text-xl font-black tracking-tight text-gray-900 dark:text-white mb-8">Client Messages</h2>
+                <div class="space-y-8 mb-10">
+                    <!-- Msg 1 -->
+                    <div class="group cursor-pointer">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-sm font-black text-gray-900 dark:text-white group-hover:text-brand transition-colors">Sarah (Web Engineering)</h4>
+                            <span class="text-[9px] font-bold text-gray-400 dark:text-gray-600 uppercase tracking-widest">10:45 AM</span>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-500 leading-relaxed truncate">The checkout flow is ready for review.</p>
+                    </div>
+                    <!-- Msg 2 -->
+                    <div class="group cursor-pointer">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-sm font-black text-gray-900 dark:text-white group-hover:text-brand transition-colors">Mike (Creative Design)</h4>
+                            <span class="text-[9px] font-bold text-gray-400 dark:text-gray-600 uppercase tracking-widest">Yesterday</span>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-500 leading-relaxed truncate">Sent over the final color palette options.</p>
+                    </div>
+                </div>
+                <button class="w-full text-emerald-500 dark:text-brand text-xs font-black uppercase tracking-[0.2em] hover:text-emerald-600 dark:hover:text-brandhover transition py-2">Open Messenger</button>
+            </div>
+
+            <!-- Pro Tip -->
+            <div class="bg-emerald-500 dark:bg-brand rounded-[2rem] p-8 relative overflow-hidden group">
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none group-hover:bg-white/20 transition-all duration-700"></div>
+                <h3 class="text-xl font-black text-white mb-4 relative z-10">Pro Tip</h3>
+                <p class="text-white/80 text-sm leading-relaxed mb-8 relative z-10 font-medium">Upgrade to Premium to get prioritized for exclusive projects from top clients.</p>
+                <a href="#" class="inline-flex items-center gap-2 bg-white text-emerald-600 dark:text-brand font-black px-6 py-3 rounded-xl text-xs uppercase tracking-widest hover:scale-105 transition-transform relative z-10">
+                    View Best Practices
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sliders = document.querySelectorAll('.progress-slider');
+        
+        sliders.forEach(slider => {
+            slider.addEventListener('input', function() {
+                const value = this.value;
+                const container = this.closest('.space-y-4');
+                const fill = container.querySelector('.progress-fill');
+                const text = container.querySelector('.progress-text');
+                
+                // Update width and text
+                fill.style.width = value + '%';
+                text.innerText = value + '%';
+            });
+        });
+    });
+</script>
+
+<footer class="border-t border-white/5 py-16 mt-20">
+    <div class="max-w-[1400px] mx-auto px-6">
+        <div class="flex flex-wrap justify-center gap-10 mb-8">
+            <a href="/" class="text-xs font-bold text-gray-500 hover:text-white transition uppercase tracking-widest">Home</a>
+            <a href="/explore" class="text-xs font-bold text-gray-500 hover:text-white transition uppercase tracking-widest">Explore</a>
+            <a href="/dashboard" class="text-xs font-bold text-gray-500 hover:text-white transition uppercase tracking-widest">Dashboard</a>
+            <a href="/request-service" class="text-xs font-bold text-gray-500 hover:text-white transition uppercase tracking-widest">Request Service</a>
+        </div>
+        <p class="text-[10px] font-bold text-gray-600 text-center uppercase tracking-[0.3em]">&copy; 2026 ServiceFlow. Connecting businesses with elite services.</p>
+    </div>
+</footer>
+
+<!-- Project Messenger -->
+<div id="messenger-widget" class="fixed bottom-8 right-8 w-80 bg-gray-800/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-white transform translate-y-16 opacity-0 transition-all duration-500 ease-in-out z-50 hidden">
+    <!-- Header -->
+    <div class="flex justify-between items-center p-4 border-b border-white/10 bg-emerald-500 rounded-t-2xl">
+        <div class="flex items-center gap-3">
+            <div class="relative">
+                <div class="w-3 h-3 bg-white rounded-full absolute -top-1 -right-1 border-2 border-emerald-500"></div>
+                <h3 class="text-sm font-bold text-white">Project Messenger</h3>
+            </div>
+            <span class="text-xs text-white/80">Live Support</span>
+        </div>
+        <button id="close-messenger" class="text-white/80 hover:text-white transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+    </div>
+    <!-- Messages -->
+    <div class="p-4 space-y-4 h-64 overflow-y-auto bg-black">
+         {% for message in messages %}
+         <div class="flex flex-col {% if loop.index is even %}items-start{% else %}items-end{% endif %}">
+             <div class="{% if loop.index is even %}bg-gray-800{% else %}bg-emerald-600{% endif %} rounded-lg p-3 max-w-xs">
+                 <p class="text-sm text-white">{{ message.content }}</p>
+                 <span class="text-xs {% if loop.index is even %}text-gray-400{% else %}text-emerald-100{% endif %} mt-1 block">{{ message.created_at.strftime('%I:%M %p') }}</span>
+             </div>
+         </div>
+         {% endfor %}
+     </div>
+    <!-- Input -->
+    <div class="p-4 border-t border-white/10 bg-black rounded-b-2xl">
+        <div class="relative">
+            <input type="text" placeholder="Type a message..." class="w-full bg-gray-900 border border-gray-800 rounded-lg py-2 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white">
+            <button class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-emerald-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<button id="open-messenger-btn" class="fixed bottom-8 right-8 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-full shadow-lg flex items-center gap-2 transition-all duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+    Project Messenger
+</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const messengerWidget = document.getElementById('messenger-widget');
+        const openBtn = document.getElementById('open-messenger-btn');
+        const closeBtn = document.getElementById('close-messenger');
+        const openInDashboardBtn = document.querySelector('.w-full.text-brand');
+
+        function openMessenger() {
+            messengerWidget.classList.remove('hidden', 'opacity-0', 'translate-y-16');
+            openBtn.classList.add('hidden');
+        }
+
+        function closeMessenger() {
+            messengerWidget.classList.add('opacity-0', 'translate-y-16');
+            setTimeout(() => {
+                messengerWidget.classList.add('hidden');
+                openBtn.classList.remove('hidden');
+            }, 500);
+        }
+
+        openBtn.addEventListener('click', openMessenger);
+        closeBtn.addEventListener('click', closeMessenger);
+        openInDashboardBtn.addEventListener('click', openMessenger);
+
+        // Escape-to-close
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            if (!messengerWidget.classList.contains('hidden')) {
+                closeMessenger();
+            }
+        });
+
+        // Click-outside-to-close
+        document.addEventListener('click', (e) => {
+            if (messengerWidget.classList.contains('hidden')) return;
+            if (e.target.closest('#messenger-widget')) return;
+            if (e.target.closest('#open-messenger-btn')) return;
+            closeMessenger();
+        });
+    });
+</script>
+
+{% endblock %}

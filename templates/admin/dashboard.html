@@ -1,0 +1,433 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Leads Hunter{% endblock %}
+
+{% block body_class %}bg-white dark:bg-[#0A0A0A] text-gray-900 dark:text-slate-200 relative overflow-hidden transition-colors duration-300{% endblock %}
+
+{% block content %}
+<!-- Background Animated Orbs -->
+<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 dark:bg-blue-600/20 blur-[100px] rounded-full mix-blend-screen animate-pulse" style="animation-duration: 4s;"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand/10 dark:bg-brand/20 blur-[100px] rounded-full mix-blend-screen animate-pulse" style="animation-duration: 6s;"></div>
+</div>
+
+<div class="flex h-screen overflow-hidden relative z-10 w-full">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-gray-50/80 dark:bg-white/5 backdrop-blur-2xl border-r border-gray-200 dark:border-white/10 p-6 flex flex-col transition-all duration-500 shadow-xl dark:shadow-[4px_0_24px_rgba(0,0,0,0.5)]">
+        <div class="sidebar-header flex items-center justify-between mb-10 transition-all duration-500">
+            <div class="sidebar-label text-xl font-bold text-gray-900 dark:text-white tracking-widest flex items-center gap-3">
+                <div class="w-2 h-8 bg-brand rounded-full"></div>
+                COMMAND CENTER
+            </div>
+            <button onclick="toggleSidebar()" class="p-2 rounded-xl hover:bg-gray-200 dark:hover:bg-white/10 text-gray-400 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white transition-all duration-300" title="Toggle Sidebar">
+                <svg id="toggleIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7M19 19l-7-7 7-7" />
+                </svg>
+            </button>
+        </div>
+        <nav class="space-y-4 flex-1 flex flex-col">
+            <a href="#" class="flex items-center space-x-3 text-brand bg-brand/10 p-3 rounded-xl border border-brand/20 shadow-[0_0_15px_rgba(0,211,127,0.1)] transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" /></svg>
+                <span class="nav-label font-bold tracking-wide">Leads Hunter</span>
+            </a>
+            <a href="{{ admin_prefix }}/talent-scout" class="flex items-center space-x-3 text-slate-400 p-3 hover:bg-white/10 hover:text-white rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 group-hover:text-blue-400 mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" /></svg>
+                <span class="nav-label font-medium">Talent Scout</span>
+            </a>
+            <a href="{{ admin_prefix }}/finance-vault" class="flex items-center space-x-3 text-slate-400 p-3 hover:bg-white/10 hover:text-white rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 group-hover:text-amber-400 mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" /><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd" /></svg>
+                <span class="nav-label font-medium">Finance Vault</span>
+            </a>
+            <a href="{{ admin_prefix }}/outreach-templates" class="flex items-center space-x-3 text-slate-400 p-3 hover:bg-white/10 hover:text-white rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 group-hover:text-purple-400 mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>
+                <span class="nav-label font-medium">Outreach Templates</span>
+            </a>
+        </nav>
+        <div class="mt-auto pt-6 border-t border-white/10">
+            <div class="user-info flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-600 rounded-full shrink-0"></div>
+                <div class="user-details overflow-hidden">
+                    <div class="text-sm font-bold text-white truncate">Lead Developer</div>
+                    <div class="text-xs text-slate-500 truncate">Admin</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10 overflow-y-auto">
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h2 class="text-4xl font-extrabold text-white tracking-tight mb-2">Leads Hunter</h2>
+                <p class="text-slate-400 text-sm">Discover and assign new project opportunities</p>
+            </div>
+            <div class="space-x-4">
+                <button onclick="scrapeOpportunities()" class="bg-brand hover:bg-brandhover text-white px-6 py-3 rounded-xl font-bold transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(0,211,127,0.3)] hover:shadow-[0_0_30px_rgba(0,211,127,0.5)] flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                    Scan for Opportunities
+                </button>
+            </div>
+        </header>
+
+        <!-- Table -->
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] group/table">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="bg-white/5 text-slate-300 text-xs uppercase tracking-widest border-b border-white/10">
+                        <th class="px-8 py-5 font-bold">Project Title</th>
+                        <th class="px-8 py-5 font-bold">Source Price</th>
+                        <th class="px-8 py-5 font-bold">Contact</th>
+                        <th class="px-8 py-5 font-bold">Status</th>
+                        <th class="px-8 py-5 font-bold text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    {% for lead in leads %}
+                    <tr class="hover:bg-white/10 transition-colors duration-300 group/row">
+                        <td class="px-8 py-6">
+                            <div class="font-bold text-white text-base group-hover/row:-translate-y-0.5 transition-transform">{{ lead.title }}</div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <span class="text-emerald-400 font-mono font-bold tracking-wide">${{ lead.source_price }}</span>
+                        </td>
+                        <td class="px-8 py-6 text-slate-400 text-sm font-medium">{{ lead.client_contact }}</td>
+                        <td class="px-8 py-6">
+                            <span class="px-4 py-1.5 bg-brand/10 text-brand rounded-full text-xs font-bold border border-brand/20 tracking-wider shadow-sm">{{ lead.status }}</span>
+                        </td>
+                        <td class="px-8 py-6 text-right space-x-2">
+                            <button onclick="openOutreachModal(this)" data-title="{{ lead.title }}" data-contact="{{ lead.client_contact }}" class="text-xs py-2 px-4 bg-white/5 hover:bg-purple-500/20 text-slate-300 hover:text-purple-300 rounded-xl transition-all duration-300 border border-white/10 hover:border-purple-500/50 hover:scale-105 active:scale-95 shadow-sm font-bold">
+                                Copy Outreach
+                            </button>
+                            {% if lead.status == 'new' %}
+                            <button onclick="openAssignModal(this)" data-id="{{ lead.id }}" data-title="{{ lead.title }}" class="text-xs py-2 px-4 bg-brand hover:bg-brandhover text-white rounded-xl transition-all duration-300 shadow-[0_4px_15px_rgba(0,211,127,0.3)] hover:shadow-[0_8px_20px_rgba(0,211,127,0.4)] hover:scale-105 active:scale-95 font-bold">
+                                Assign Lead
+                            </button>
+                            {% endif %}
+                            <button onclick="generateLink(this)" data-id="{{ lead.id }}" class="text-xs py-2 px-4 bg-white/5 hover:bg-blue-500/20 text-slate-300 hover:text-blue-300 rounded-xl transition-all duration-300 border border-white/10 hover:border-blue-500/50 hover:scale-105 active:scale-95 shadow-sm font-bold">
+                                Pay Link
+                            </button>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Messaging Admin Section -->
+        <div class="mt-14 max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-2xl bg-brand/10 flex items-center justify-center text-brand">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl font-bold text-white tracking-tight">Client Inquiries</h2>
+                    <p class="text-slate-400 text-sm">Messages sent by clients from their dashboard</p>
+                </div>
+            </div>
+
+            <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-white/5 text-slate-300 text-xs uppercase tracking-widest border-b border-white/10">
+                            <th class="px-8 py-5 font-bold">Client Email</th>
+                            <th class="px-8 py-5 font-bold">Subject</th>
+                            <th class="px-8 py-5 font-bold">Message Preview</th>
+                            <th class="px-8 py-5 font-bold">Received</th>
+                            <th class="px-8 py-5 font-bold text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5">
+                        {% for msg in client_messages %}
+                        <tr class="hover:bg-white/10 transition-colors duration-300 group/msg">
+                            <td class="px-8 py-6">
+                                <div class="font-bold text-white text-sm">{{ msg.sender_email }}</div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <div class="text-slate-300 font-medium text-sm">{{ msg.subject }}</div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <div class="text-slate-400 text-xs truncate max-w-xs">{{ msg.content }}</div>
+                            </td>
+                            <td class="px-8 py-6 text-slate-500 text-[11px] font-mono">
+                                {{ msg.created_at.strftime('%b %d, %H:%M') }}
+                            </td>
+                            <td class="px-8 py-6 text-right">
+                                <button onclick="viewMessage('{{ msg.sender_email|e }}', '{{ msg.subject|e }}', '{{ msg.content|e }}')" class="text-xs py-2 px-4 bg-brand/10 hover:bg-brand text-brand hover:text-white rounded-xl transition-all duration-300 border border-brand/20 hover:border-brand shadow-sm font-bold">
+                                    View Full
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% if not client_messages %}
+                        <tr>
+                            <td colspan="5" class="px-8 py-12 text-center text-slate-500 italic">No messages received yet.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for Viewing Message -->
+    <div id="messageModal" data-modal-backdrop class="hidden fixed inset-0 bg-black/80 backdrop-blur-xl flex items-center justify-center z-[60]">
+        <div data-modal-content class="bg-[#1A1A1A]/90 backdrop-blur-2xl border border-white/10 w-full max-w-lg p-10 rounded-[2rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] transform scale-95 opacity-0 transition-all duration-500 relative" id="messageModalContent">
+            <button type="button" data-modal-close="#messageModal" class="absolute top-6 right-6 p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h3 class="text-3xl font-bold text-white mb-2">Client Message</h3>
+            <p id="msgSender" class="text-brand font-medium text-sm mb-6"></p>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-xs uppercase tracking-wider font-bold text-slate-400 mb-2">Subject</label>
+                    <div id="msgSubject" class="text-white font-bold text-lg"></div>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-wider font-bold text-slate-400 mb-2">Content</label>
+                    <div id="msgContent" class="bg-black/50 p-6 rounded-xl border border-white/10 text-[13px] text-slate-300 leading-relaxed whitespace-pre-wrap max-h-64 overflow-y-auto"></div>
+                </div>
+
+                <div class="flex justify-end mt-10">
+                    <button data-modal-close="#messageModal" onclick="closeMessageModal()" class="bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded-xl font-bold transition-all duration-300">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Outreach -->
+    <div id="outreachModal" data-modal-backdrop class="hidden fixed inset-0 bg-black/80 backdrop-blur-xl flex items-center justify-center z-50">
+        <div data-modal-content class="bg-[#1A1A1A]/90 backdrop-blur-2xl border border-white/10 w-full max-w-lg p-10 rounded-[2rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] transform scale-95 opacity-0 transition-all duration-500 relative" id="outreachModalContent">
+            <button type="button" data-modal-close="#outreachModal" class="absolute top-6 right-6 p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h3 class="text-3xl font-bold text-white mb-2">Compose Outreach</h3>
+            <p id="outreachLeadName" class="text-brand font-medium text-sm mb-8"></p>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-xs uppercase tracking-wider font-bold text-slate-400 mb-2">Select Pitch Template</label>
+                    <select id="templateSelect" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:ring-2 focus:ring-brand/50 focus:border-brand outline-none transition-all duration-300 font-medium" onchange="previewTemplate()">
+                        <option value="">- Select -</option>
+                        {% for temp in outreach_templates %}
+                        <option value="{{ temp.id }}" data-body="{{ temp.body|e }}">{{ temp.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div id="previewArea" class="hidden">
+                    <label class="block text-xs uppercase tracking-wider font-bold text-slate-400 mb-2">Preview (Populated)</label>
+                    <div id="outreachPreview" class="bg-black/50 p-6 rounded-xl border border-white/10 text-[13px] text-slate-300 font-mono whitespace-pre-wrap max-h-48 overflow-y-auto shadow-inner leading-relaxed"></div>
+                </div>
+
+                <div class="flex justify-end space-x-4 mt-10">
+                    <button type="button" data-modal-close="#outreachModal" onclick="closeOutreachModal()" class="px-6 py-3 text-slate-400 hover:text-white font-bold transition-colors">Cancel</button>
+                    <button onclick="copyOutreachResult()" class="bg-brand hover:bg-brandhover text-white px-8 py-3 rounded-xl font-bold transition-all duration-300 shadow-[0_4px_15px_rgba(0,211,127,0.3)] hover:shadow-[0_8px_20px_rgba(0,211,127,0.4)] hover:scale-105 active:scale-95">Copy to Clipboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal for Assignment -->
+    <div id="assignModal" data-modal-backdrop class="hidden fixed inset-0 bg-black/80 backdrop-blur-xl flex items-center justify-center z-50">
+        <div data-modal-content class="bg-[#1A1A1A]/90 backdrop-blur-2xl border border-white/10 w-full max-w-lg p-10 rounded-[2rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] transform scale-95 opacity-0 transition-all duration-500 relative" id="assignModalContent">
+            <button type="button" data-modal-close="#assignModal" class="absolute top-6 right-6 p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <h3 class="text-3xl font-bold text-white mb-2">Assign Project</h3>
+            <p id="modalLeadTitle" class="text-brand font-medium text-sm mb-8"></p>
+            
+            <form action="{{ admin_prefix }}/assign-lead" method="POST" class="space-y-6">
+                <input type="hidden" name="lead_id" id="modalLeadId">
+                <div>
+                    <label class="block text-xs uppercase tracking-wider font-bold text-slate-400 mb-2">Select Workforce</label>
+                    <select id="worker_type" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:ring-2 focus:ring-brand/50 focus:border-brand outline-none transition-all duration-300 font-medium" onchange="toggleWorkerList()">
+                        <option value="registered">Registered Freelancers</option>
+                        <option value="scraped">Scraped Leads (Talent Scout)</option>
+                    </select>
+                </div>
+
+                <div id="registered_list">
+                    <label class="block text-xs uppercase tracking-wider font-bold text-slate-400 mb-2">Registered Freelancer</label>
+                    <select name="freelancer_id" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:ring-2 focus:ring-brand/50 focus:border-brand outline-none transition-all duration-300 font-medium">
+                        <option value="">- Select -</option>
+                        {% for f in freelancers %}
+                        <option value="{{ f.id }}">{{ f.name }} ({{ f.primary_skill }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div id="scraped_list" class="hidden">
+                    <label class="block text-xs uppercase tracking-wider font-bold text-slate-400 mb-2">Scraped Lead</label>
+                    <select name="scraped_id" class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:ring-2 focus:ring-brand/50 focus:border-brand outline-none transition-all duration-300 font-medium">
+                        <option value="">- Select -</option>
+                        {% for s in scraped %}
+                        <option value="{{ s.id }}">{{ s.name }} ({{ s.source }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase tracking-wider font-bold text-slate-400 mb-2">Payout Price ($)</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-slate-400">$</span>
+                        <input type="number" name="payout" step="0.01" value="80.00" class="w-full bg-black/50 border border-white/10 rounded-xl pl-8 pr-4 py-3.5 text-white focus:ring-2 focus:ring-brand/50 focus:border-brand outline-none transition-all duration-300 font-mono text-lg" required>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-4 mt-10">
+                    <button type="button" data-modal-close="#assignModal" onclick="closeAssignModal()" class="px-6 py-3 text-slate-400 hover:text-white font-bold transition-colors">Cancel</button>
+                    <button type="submit" class="bg-brand hover:bg-brandhover text-white px-8 py-3 rounded-xl font-bold transition-all duration-300 shadow-[0_4px_15px_rgba(0,211,127,0.3)] hover:shadow-[0_8px_20px_rgba(0,211,127,0.4)] hover:scale-105 active:scale-95">Finalize Assignment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* For the modals scale effect */
+    .scale-in { transform: scale(1)!important; opacity: 1!important; }
+</style>
+
+<script>
+let activeLeadData = {};
+
+        function viewMessage(sender, subject, content) {
+            document.getElementById('msgSender').innerText = 'From: ' + sender;
+            document.getElementById('msgSubject').innerText = subject;
+            document.getElementById('msgContent').innerText = content;
+            
+            const modal = document.getElementById('messageModal');
+            const contentDiv = document.getElementById('messageModalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                contentDiv.classList.remove('scale-95', 'opacity-0');
+                contentDiv.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeMessageModal() {
+            const contentDiv = document.getElementById('messageModalContent');
+            contentDiv.classList.remove('scale-100', 'opacity-100');
+            contentDiv.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                document.getElementById('messageModal').classList.add('hidden');
+            }, 500);
+        }
+
+function openOutreachModal(btn) {
+    activeLeadData = {
+        title: btn.getAttribute('data-title'),
+        contact: btn.getAttribute('data-contact')
+    };
+    document.getElementById('outreachLeadName').innerText = `Project: ${activeLeadData.title}`;
+    const modal = document.getElementById('outreachModal');
+    const content = document.getElementById('outreachModalContent');
+    modal.classList.remove('hidden');
+    setTimeout(() => content.classList.add('scale-in'), 10);
+    document.getElementById('templateSelect').value = '';
+    document.getElementById('previewArea').classList.add('hidden');
+}
+
+function closeOutreachModal() {
+    const modal = document.getElementById('outreachModal');
+    const content = document.getElementById('outreachModalContent');
+    content.classList.remove('scale-in');
+    setTimeout(() => modal.classList.add('hidden'), 300);
+}
+
+function previewTemplate() {
+    const select = document.getElementById('templateSelect');
+    if (!select.value) {
+        document.getElementById('previewArea').classList.add('hidden');
+        return;
+    }
+    
+    const body = select.options[select.selectedIndex].getAttribute('data-body');
+    const populated = body
+        .replace(/{client_name}/g, activeLeadData.contact.split('@')[0])
+        .replace(/{job_title}/g, activeLeadData.title);
+    
+    document.getElementById('outreachPreview').innerText = populated;
+    document.getElementById('previewArea').classList.remove('hidden');
+}
+
+async function copyOutreachResult() {
+    const content = document.getElementById('outreachPreview').innerText;
+    try {
+        await navigator.clipboard.writeText(content);
+        alert('Copied to clipboard!');
+        closeOutreachModal();
+    } catch (err) {
+        alert('Failed to copy.');
+    }
+}
+
+function openAssignModal(btn) {
+
+    const id = btn.getAttribute('data-id');
+    const title = btn.getAttribute('data-title');
+    document.getElementById('modalLeadId').value = id;
+    document.getElementById('modalLeadTitle').innerText = title;
+    const modal = document.getElementById('assignModal');
+    const content = document.getElementById('assignModalContent');
+    modal.classList.remove('hidden');
+    setTimeout(() => content.classList.add('scale-in'), 10);
+}
+
+function closeAssignModal() {
+    const modal = document.getElementById('assignModal');
+    const content = document.getElementById('assignModalContent');
+    content.classList.remove('scale-in');
+    setTimeout(() => modal.classList.add('hidden'), 300);
+}
+
+function toggleWorkerList() {
+    const type = document.getElementById('worker_type').value;
+    const regList = document.getElementById('registered_list');
+    const scrapedList = document.getElementById('scraped_list');
+    
+    if (type === 'registered') {
+        regList.classList.remove('hidden');
+        scrapedList.classList.add('hidden');
+        scrapedList.querySelector('select').value = "";
+    } else {
+        regList.classList.add('hidden');
+        scrapedList.classList.remove('hidden');
+        regList.querySelector('select').value = "";
+    }
+}
+
+async function scrapeOpportunities() {
+    const btn = event.target;
+    const originalText = btn.innerText;
+    btn.innerText = "Scanning...";
+    btn.disabled = true;
+    
+    try {
+        const res = await fetch(`{{ admin_prefix }}/scrape`, { method: 'POST' });
+        const data = await res.json();
+        alert(data.message);
+        window.location.reload();
+    } catch (e) {
+        alert("Error during scan.");
+    } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
+    }
+}
+
+async function generateLink(btn) {
+    const id = btn.getAttribute('data-id');
+    const res = await fetch(`{{ admin_prefix }}/generate-flutterwave-link/${id}`, { method: 'POST' });
+    const data = await res.json();
+    alert(`Flutterwave Link Generated: ${data.link}`);
+}
+
+</script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Chat{% endblock %}
+
+{% block body_class %}bg-white dark:bg-[#0A0A0A] text-gray-900 dark:text-slate-200 relative overflow-hidden transition-colors duration-300{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-12">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">Conversation #{{ conversation.id }}</h1>
+            <p class="text-sm text-gray-500 dark:text-slate-400 mt-2">
+                Task #{{ conversation.task_id }} • {{ conversation.client.name if conversation.client else 'Client' }} ↔ {{ conversation.freelancer.name if conversation.freelancer else 'Freelancer' }}
+            </p>
+        </div>
+        <a href="{{ admin_prefix }}/chats" class="text-sm font-bold text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white transition">Back</a>
+    </div>
+
+    <div class="bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-6 shadow-xl">
+        <div class="space-y-4 max-h-[70vh] overflow-y-auto">
+            {% for m in messages %}
+            <div class="flex {% if m.sender_role == 'admin' %}justify-center{% elif m.sender_role == 'client' %}justify-start{% else %}justify-end{% endif %}">
+                <div class="max-w-[80%] rounded-2xl px-4 py-3 border border-gray-200 dark:border-white/10 {% if m.sender_role == 'client' %}bg-gray-50 dark:bg-black/30{% elif m.sender_role == 'freelancer' %}bg-brand/10{% else %}bg-purple-500/10{% endif %}">
+                    <div class="text-xs font-black uppercase tracking-widest text-gray-400 dark:text-slate-500 mb-2">
+                        {{ m.sender_role }} • {{ m.created_at.strftime('%b %d, %H:%M') }}
+                    </div>
+                    <div class="text-sm whitespace-pre-wrap">{{ m.content }}</div>
+                </div>
+            </div>
+            {% endfor %}
+            {% if not messages %}
+            <div class="text-center text-gray-500 italic py-10">No messages yet.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

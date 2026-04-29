@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}Explore Services - The Bridge{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<nav class="border-b border-white/20 dark:border-white/5 bg-white/70 dark:bg-[#0F0F0F]/70 backdrop-blur-xl sticky top-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-2">
+            <div class="w-7 h-7 bg-brand rounded flex items-center justify-center text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M12 2l2.4 7.6H22l-6.2 4.4 2.4 7.6-6.2-4.4-6.2 4.4 2.4-7.6-6.2-4.4h7.6z"/>
+                </svg>
+            </div>
+            <span class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">The Bridge</span>
+        </a>
+        <div class="flex items-center gap-8">
+            <a href="/explore" class="text-sm font-medium text-gray-900 dark:text-white transition">Explore</a>
+            <a href="/dashboard" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Dashboard</a>
+            
+            <div class="hidden sm:flex bg-gray-100 dark:bg-white/5 p-1 rounded-full border border-gray-200 dark:border-white/5">
+                <a href="/dashboard" class="px-4 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-full bg-white dark:bg-brand text-gray-900 dark:text-white shadow-sm dark:shadow-lg">Client</a>
+                <a href="/portal/landing" class="px-4 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-full text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Freelancer</a>
+            </div>
+
+            <button onclick="toggleTheme()" class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition" aria-label="Toggle Theme">
+                <!-- Moon Icon (visible in light mode) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 dark:hidden">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+                <!-- Sun Icon (visible in dark mode) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden dark:block">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M3 12h2.25m.386-6.364l1.591-1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                </svg>
+            </button>
+            <a href="/login" class="bg-brand hover:bg-brandhover text-white text-sm font-semibold px-5 py-2 rounded-full transition">Sign In</a>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-6 py-12">
+    <!-- Header Area -->
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-3 tracking-tight">Explore Services</h1>
+        <p class="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">Browse through our specialized service teams and find the perfect partner for your next project.</p>
+    </div>
+
+    <!-- Filters and Search -->
+    <div class="bg-white/90 dark:bg-[#171717]/80 backdrop-blur-xl rounded-3xl p-3 md:p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 mb-12 border border-white/20 dark:border-white/5 shadow-lg hover:shadow-xl dark:shadow-none transition-all duration-500 hover:-translate-y-1">
+        <div class="flex flex-wrap gap-2">
+            <button class="bg-brand hover:bg-brandhover hover:scale-105 active:scale-95 text-white font-bold text-[13px] px-5 py-2.5 rounded-full transition-all duration-300 shadow-[0_4px_15px_rgba(0,211,127,0.3)] hover:shadow-[0_8px_20px_rgba(0,211,127,0.4)]">All</button>
+            <button class="bg-transparent dark:bg-[#242424]/50 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white/80 dark:hover:bg-[#2A2A2A] hover:scale-105 active:scale-95 hover:shadow-md font-semibold text-[13px] px-4 py-2.5 rounded-full transition-all duration-300">Development</button>
+            <button class="bg-transparent dark:bg-[#242424]/50 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white/80 dark:hover:bg-[#2A2A2A] hover:scale-105 active:scale-95 hover:shadow-md font-semibold text-[13px] px-4 py-2.5 rounded-full transition-all duration-300">Design</button>
+            <button class="bg-white/80 dark:bg-[#242424]/80 text-gray-900 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-[#2A2A2A] shadow-sm hover:scale-105 active:scale-95 font-semibold text-[13px] px-4 py-2.5 rounded-full transition-all duration-300">Marketing</button>
+            <button class="bg-transparent dark:bg-[#242424]/50 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white/80 dark:hover:bg-[#2A2A2A] hover:scale-105 active:scale-95 hover:shadow-md font-semibold text-[13px] px-4 py-2.5 rounded-full transition-all duration-300">Consulting</button>
+            <button class="bg-transparent dark:bg-[#242424]/50 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-white/80 dark:hover:bg-[#2A2A2A] hover:scale-105 active:scale-95 hover:shadow-md font-semibold text-[13px] px-4 py-2.5 rounded-full transition-all duration-300">Writing</button>
+        </div>
+        
+        <div class="relative w-full md:w-[320px] group">
+            <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-400 group-hover:text-brand transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
+            </div>
+            <input type="text" placeholder="Search services..." class="w-full bg-white/50 dark:bg-[#242424]/50 border border-black/5 dark:border-white/5 text-gray-900 dark:text-white rounded-full pl-12 pr-6 py-3.5 text-[13px] font-medium placeholder-gray-400 focus:bg-white dark:focus:bg-[#2A2A2A] focus:ring-2 focus:ring-brand/30 focus:border-brand focus:outline-none transition-all duration-300 shadow-inner">
+        </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Card 1 -->
+        <div class="group bg-white/90 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/20 dark:border-white/5 rounded-[2rem] overflow-hidden hover:-translate-y-2 transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(0,211,127,0.15)] dark:shadow-none dark:hover:shadow-[0_20px_40px_rgba(0,211,127,0.1)] relative">
+            <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent dark:from-white/5 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="h-52 bg-gray-200 dark:bg-gray-800 overflow-hidden relative">
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800" alt="Development" class="w-full h-full object-cover dark:opacity-80 group-hover:scale-105 transition-transform duration-700"/>
+                <div class="absolute top-4 left-4 bg-white/95 text-gray-900 text-[11px] font-bold px-3 py-1 rounded-full shadow-sm group-hover:-translate-y-1 transition-transform">Development</div>
+            </div>
+            <div class="p-8 relative z-10">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight group-hover:text-brand transition-colors duration-300">Custom Web Development</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mb-8 flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-brand"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /></svg>
+                    Web Engineering Team
+                </p>
+                <div class="flex items-end justify-between">
+                    <div>
+                        <p class="text-[10px] uppercase font-bold text-gray-400 mb-0.5 tracking-wider">Pricing</p>
+                        <p class="text-gray-900 dark:text-white font-bold text-[17px]">From $2,500</p>
+                    </div>
+                    <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-500 rounded-xl px-3 py-1.5 flex items-center gap-1 hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" /></svg>
+                        <span class="font-bold text-sm">4.9</span>
+                    </div>
+                </div>
+                <button class="w-full mt-6 bg-[#1A1A1A] dark:bg-white text-white dark:text-[#1A1A1A] font-bold py-3.5 rounded-2xl transition-all duration-300 hover:shadow-[0_8px_20px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_20px_rgba(255,255,255,0.2)] hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 text-[13px] group/btn">
+                    View Details
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="group bg-white/90 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/20 dark:border-white/5 rounded-[2rem] overflow-hidden hover:-translate-y-2 transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(0,211,127,0.15)] dark:shadow-none dark:hover:shadow-[0_20px_40px_rgba(0,211,127,0.1)] relative">
+            <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent dark:from-white/5 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="h-52 bg-gray-200 dark:bg-gray-800 overflow-hidden relative">
+                <img src="https://images.unsplash.com/photo-1600861194942-f883de0bFC2?auto=format&fit=crop&q=80&w=800" alt="Design" class="w-full h-full object-cover dark:opacity-80 mix-blend-luminosity group-hover:scale-105 transition-transform duration-700"/>
+                <div class="absolute top-4 left-4 bg-white/95 text-gray-900 text-[11px] font-bold px-3 py-1 rounded-full shadow-sm group-hover:-translate-y-1 transition-transform">Design</div>
+            </div>
+            <div class="p-8 relative z-10">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight group-hover:text-brand transition-colors duration-300">Brand Identity Design</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mb-8 flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-brand"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" /></svg>
+                    Creative Design Studio
+                </p>
+                <div class="flex items-end justify-between">
+                    <div>
+                        <p class="text-[10px] uppercase font-bold text-gray-400 mb-0.5 tracking-wider">Pricing</p>
+                        <p class="text-gray-900 dark:text-white font-bold text-[17px]">From $1,200</p>
+                    </div>
+                    <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-500 rounded-xl px-3 py-1.5 flex items-center gap-1 hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" /></svg>
+                        <span class="font-bold text-sm">5.0</span>
+                    </div>
+                </div>
+                <button class="w-full mt-6 bg-[#1A1A1A] dark:bg-white text-white dark:text-[#1A1A1A] font-bold py-3.5 rounded-2xl transition-all duration-300 hover:shadow-[0_8px_20px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_20px_rgba(255,255,255,0.2)] hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 text-[13px] group/btn">
+                    View Details
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="group bg-white/90 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/20 dark:border-white/5 rounded-[2rem] overflow-hidden hover:-translate-y-2 transition-all duration-500 shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:shadow-[0_20px_40px_rgba(0,211,127,0.15)] dark:shadow-none dark:hover:shadow-[0_20px_40px_rgba(0,211,127,0.1)] relative">
+            <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent dark:from-white/5 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="h-52 bg-gray-200 dark:bg-gray-800 overflow-hidden relative">
+                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800" alt="Marketing" class="w-full h-full object-cover dark:opacity-80 grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"/>
+                <div class="absolute top-4 left-4 bg-white/95 text-gray-900 text-[11px] font-bold px-3 py-1 rounded-full shadow-sm group-hover:-translate-y-1 transition-transform">Marketing</div>
+            </div>
+            <div class="p-8 relative z-10">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight group-hover:text-brand transition-colors duration-300">SEO & Content Strategy</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mb-8 flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-brand"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" /></svg>
+                    Digital Growth Team
+                </p>
+                <div class="flex items-end justify-between">
+                    <div>
+                        <p class="text-[10px] uppercase font-bold text-gray-400 mb-0.5 tracking-wider">Pricing</p>
+                        <p class="text-gray-900 dark:text-white font-bold text-[17px]">From $800/mo</p>
+                    </div>
+                    <div class="bg-orange-50 dark:bg-orange-500/10 text-orange-500 rounded-xl px-3 py-1.5 flex items-center gap-1 hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" /></svg>
+                        <span class="font-bold text-sm">4.8</span>
+                    </div>
+                </div>
+                <button class="w-full mt-6 bg-[#1A1A1A] dark:bg-white text-white dark:text-[#1A1A1A] font-bold py-3.5 rounded-2xl transition-all duration-300 hover:shadow-[0_8px_20px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_20px_rgba(255,255,255,0.2)] hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 text-[13px] group/btn">
+                    View Details
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="border-t border-gray-200 dark:border-gray-800 py-12 text-center text-sm font-medium text-gray-500 bg-gray-50 dark:bg-[#0A0A0A] mt-12">
+    <div class="flex justify-center gap-6 mb-6">
+        <a href="/" class="hover:text-gray-900 dark:hover:text-white transition">Home</a>
+        <a href="/explore" class="hover:text-gray-900 dark:hover:text-white transition">Explore</a>
+        <a href="/dashboard" class="hover:text-gray-900 dark:hover:text-white transition">Dashboard</a>
+        <a href="#" class="hover:text-gray-900 dark:hover:text-white transition">Post Request</a>
+    </div>
+    <p>&copy; 2026 The Bridge. Connecting businesses with elite talent.</p>
+</footer>
+
+{% endblock %}

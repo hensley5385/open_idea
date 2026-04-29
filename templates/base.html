@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}The Bridge{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#00D37F',
+                        brandhover: '#00B26A',
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Sidebar Collapse Styles */
+        .sidebar-collapsed {
+            width: 5rem !important;
+            padding-left: 0.75rem !important;
+            padding-right: 0.75rem !important;
+        }
+        .sidebar-collapsed .sidebar-label,
+        .sidebar-collapsed .nav-label,
+        .sidebar-collapsed .user-details {
+            display: none !important;
+        }
+        .sidebar-collapsed .sidebar-header {
+            justify-content: center !important;
+            margin-bottom: 2rem !important;
+        }
+        .sidebar-collapsed nav {
+            align-items: center !important;
+        }
+        .sidebar-collapsed nav a {
+            justify-content: center !important;
+            width: 3.5rem !important;
+            height: 3.5rem !important;
+            padding: 0 !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+        .sidebar-collapsed .user-info {
+            justify-content: center !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+    </style>
+</head>
+<body class="{% block body_class %}bg-white text-gray-900 dark:bg-[#0F0F0F] dark:text-gray-100{% endblock %} transition-colors duration-300">
+    {% block content %}{% endblock %}
+
+    <script>
+        function toggleTheme() {
+            const isDarkMode = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar) return;
+            
+            sidebar.classList.toggle('sidebar-collapsed');
+            const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+            localStorage.setItem('sidebar-collapsed', isCollapsed);
+            
+            const toggleIcon = document.getElementById('toggleIcon');
+            if (toggleIcon) {
+                if (isCollapsed) {
+                    toggleIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />';
+                } else {
+                    toggleIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7M19 19l-7-7 7-7" />';
+                }
+            }
+        }
+
+        // Handle responsive sidebar behavior
+        function handleResize() {
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar) return;
+
+            // Automatically collapse on small screens (< 1024px)
+            if (window.innerWidth < 1024) {
+                if (!sidebar.classList.contains('sidebar-collapsed')) {
+                    sidebar.classList.add('sidebar-collapsed');
+                    updateSidebarIcon(true);
+                }
+            } else {
+                // Restore preference on larger screens
+                const wasCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+                if (wasCollapsed) {
+                    sidebar.classList.add('sidebar-collapsed');
+                    updateSidebarIcon(true);
+                } else {
+                    sidebar.classList.remove('sidebar-collapsed');
+                    updateSidebarIcon(false);
+                }
+            }
+        }
+
+        function updateSidebarIcon(isCollapsed) {
+            const toggleIcon = document.getElementById('toggleIcon');
+            if (toggleIcon) {
+                if (isCollapsed) {
+                    toggleIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />';
+                } else {
+                    toggleIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7M19 19l-7-7 7-7" />';
+                }
+            }
+        }
+
+        // Apply sidebar state on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                handleResize(); // Initial check
+                window.addEventListener('resize', handleResize);
+            }
+        });
+    </script>
+
+    <script>
+        // Generic modal behavior:
+        // - Backdrop click closes
+        // - Escape closes top-most open modal
+        (function () {
+            function isHidden(el) {
+                return !el || el.classList.contains('hidden');
+            }
+
+            function closeBackdrop(backdrop) {
+                if (!backdrop) return;
+                backdrop.classList.add('hidden');
+                backdrop.dispatchEvent(new CustomEvent('bridge:modal:closed'));
+            }
+
+            function openBackdrops() {
+                return Array.from(document.querySelectorAll('[data-modal-backdrop]'))
+                    .filter((el) => !isHidden(el));
+            }
+
+            document.addEventListener('click', (e) => {
+                const closeBtn = e.target.closest('[data-modal-close]');
+                if (closeBtn) {
+                    const selector = closeBtn.getAttribute('data-modal-close');
+                    const backdrop = selector ? document.querySelector(selector) : closeBtn.closest('[data-modal-backdrop]');
+                    closeBackdrop(backdrop);
+                    return;
+                }
+
+                const backdrop = e.target.closest('[data-modal-backdrop]');
+                if (backdrop && e.target === backdrop) {
+                    closeBackdrop(backdrop);
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key !== 'Escape') return;
+                const open = openBackdrops();
+                if (!open.length) return;
+                // Close the last one in DOM order (best-effort \"topmost\")
+                closeBackdrop(open[open.length - 1]);
+            });
+        })();
+    </script>
+</body>
+</html>

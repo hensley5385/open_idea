@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login - The Bridge{% endblock %}
+
+{% block body_class %}bg-[#0A0A0A] text-white flex items-center justify-center min-h-screen px-6 selection:bg-brand selection:text-black{% endblock %}
+
+{% block content %}
+<!-- Admin Background (More focused and dark) -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-0 right-0 w-[60%] h-[60%] bg-emerald-500/5 blur-[120px] rounded-full"></div>
+    <div class="absolute bottom-0 left-0 w-[50%] h-[50%] bg-blue-500/5 blur-[100px] rounded-full"></div>
+    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03]"></div>
+</div>
+
+<div class="max-w-md w-full relative z-10 transition-all duration-700">
+    <!-- Header -->
+    <div class="text-center mb-10">
+        <a href="/" class="inline-flex items-center gap-3 mb-6 group">
+            <div class="w-10 h-10 bg-brand rounded-xl flex items-center justify-center text-white shadow-[0_0_20px_rgba(0,211,127,0.4)] group-hover:scale-110 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                    <path d="M12 2l2.4 7.6H22l-6.2 4.4 2.4 7.6-6.2-4.4-6.2 4.4 2.4-7.6-6.2-4.4h7.6z"/>
+                </svg>
+            </div>
+            <span class="text-2xl font-black tracking-tight">The Bridge <span class="text-xs uppercase bg-brand/10 text-brand px-2 py-0.5 rounded ml-1 border border-brand/20">Admin</span></span>
+        </a>
+        <h1 class="text-3xl font-bold mb-2">Central Command</h1>
+        <p class="text-gray-500 font-medium">Secure access for authorized administrators only.</p>
+    </div>
+
+    <!-- Login Card -->
+    <div class="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-8 md:p-10 shadow-2xl relative overflow-hidden group">
+        <!-- Error Message -->
+        {% if error %}
+        <div class="mb-8 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-400 text-sm font-bold flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="{{ admin_prefix }}/login" method="POST" class="space-y-6">
+            <div class="space-y-2">
+                <label for="email" class="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Admin Email</label>
+                <input id="email" name="email" type="email" required 
+                       class="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder-gray-600 focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all" 
+                       placeholder="admin@thebridge.com">
+            </div>
+
+            <div class="space-y-2">
+                <label for="password" class="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">Passphrase</label>
+                <input id="password" name="password" type="password" required 
+                       class="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder-gray-600 focus:ring-2 focus:ring-brand/20 focus:border-brand outline-none transition-all" 
+                       placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="w-full bg-brand hover:bg-brandhover text-black font-black py-5 rounded-[1.2rem] transition-all transform hover:scale-[1.02] active:scale-95 shadow-xl shadow-brand/10 flex items-center justify-center gap-2 mt-4">
+                <span>Authorize Access</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 4.908-3.367 9.044-8 10.233a11.954 11.954 0 01-8-10.233c0-.681.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+            </button>
+        </form>
+    </div>
+    
+    <p class="text-center text-gray-600 text-sm mt-8 border-t border-white/5 pt-8">
+        Secure Management Interface v1.0.4<br>
+        Property of The Bridge Project.
+    </p>
+</div>
+{% endblock %}

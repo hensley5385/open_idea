@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Finance Vault{% endblock %}
+
+{% block body_class %}bg-white dark:bg-[#0A0A0A] text-gray-900 dark:text-slate-200 relative overflow-hidden transition-colors duration-300{% endblock %}
+
+{% block content %}
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Background Animated Orbs -->
+<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-blue-600/10 dark:bg-blue-600/20 blur-[100px] rounded-full mix-blend-screen animate-pulse" style="animation-duration: 5s;"></div>
+    <div class="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-900/10 dark:bg-blue-900/20 blur-[120px] rounded-full mix-blend-screen animate-pulse" style="animation-duration: 7s;"></div>
+</div>
+
+<div class="flex h-screen overflow-hidden relative z-10 w-full">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-gray-50/80 dark:bg-white/5 backdrop-blur-2xl border-r border-gray-200 dark:border-white/10 p-6 flex flex-col transition-all duration-500 shadow-xl dark:shadow-[4px_0_24px_rgba(0,0,0,0.5)]">
+        <div class="sidebar-header flex items-center justify-between mb-10 transition-all duration-500">
+            <div class="sidebar-label text-xl font-bold text-gray-900 dark:text-white tracking-widest flex items-center gap-3">
+                <div class="w-2 h-8 bg-brand rounded-full"></div>
+                COMMAND CENTER
+            </div>
+            <button onclick="toggleSidebar()" class="p-2 rounded-xl hover:bg-gray-200 dark:hover:bg-white/10 text-gray-400 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white transition-all duration-300" title="Toggle Sidebar">
+                <svg id="toggleIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7M19 19l-7-7 7-7" />
+                </svg>
+            </button>
+        </div>
+        <nav class="space-y-4 flex-1 flex flex-col">
+            <a href="{{ admin_prefix }}/" class="flex items-center space-x-3 text-gray-500 dark:text-slate-400 p-3 hover:bg-gray-200 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:text-blue-500 dark:group-hover:text-blue-400 mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" /></svg>
+                <span class="nav-label font-medium">Leads Hunter</span>
+            </a>
+            <a href="{{ admin_prefix }}/talent-scout" class="flex items-center space-x-3 text-gray-500 dark:text-slate-400 p-3 hover:bg-gray-200 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:text-emerald-500 dark:group-hover:text-emerald-400 mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" /></svg>
+                <span class="nav-label font-medium">Talent Scout</span>
+            </a>
+            <a href="{{ admin_prefix }}/finance-vault" class="flex items-center space-x-3 text-blue-500 bg-blue-500/10 p-3 rounded-xl border border-blue-500/20 shadow-sm transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" /><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd" /></svg>
+                <span class="nav-label font-bold tracking-wide">Finance Vault</span>
+            </a>
+            <a href="{{ admin_prefix }}/outreach-templates" class="flex items-center space-x-3 text-gray-500 dark:text-slate-400 p-3 hover:bg-gray-200 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0 group-hover:text-purple-500 dark:group-hover:text-purple-400 mt-0.5" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>
+                <span class="nav-label font-medium">Outreach Templates</span>
+            </a>
+        </nav>
+        <div class="mt-auto pt-6 border-t border-gray-200 dark:border-white/10">
+            <div class="user-info flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-600 rounded-full shrink-0"></div>
+                <div class="user-details overflow-hidden">
+                    <div class="text-sm font-bold text-gray-900 dark:text-white truncate">Lead Developer</div>
+                    <div class="text-xs text-gray-500 dark:text-slate-500 truncate">Admin</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10 overflow-y-auto w-full">
+        <header class="mb-12 w-full max-w-7xl mx-auto flex justify-between items-center">
+            <div>
+                <h2 class="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">Finance Vault</h2>
+                <p class="text-gray-500 dark:text-slate-400 mt-2 text-sm italic border-l-2 border-blue-500 pl-3">"Phase 4: Tracking the Engine's heartbeat."</p>
+            </div>
+            <button onclick="toggleTheme()" class="p-2.5 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-300" title="Toggle Theme">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden dark:block">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M3 12h2.25m.386-6.364l1.591-1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 dark:hidden">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+            </button>
+        </header>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14 max-w-7xl mx-auto">
+            <div class="bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-8 rounded-3xl shadow-xl dark:shadow-lg hover:shadow-2xl dark:hover:shadow-[0_20px_40px_rgba(16,185,129,0.1)] hover:border-emerald-500/30 transition-all duration-500 hover:-translate-y-1 group">
+                <div class="text-gray-500 dark:text-slate-400 text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400"></div> Total Revenue
+                </div>
+                <div class="text-5xl font-black text-emerald-500 dark:text-emerald-400 font-mono tracking-tighter group-hover:scale-105 origin-left transition-transform duration-500">${{ "%.2f"|format(total_revenue) }}</div>
+                <div class="mt-4 text-[11px] text-gray-400 dark:text-slate-500 italic font-medium">Sum of all 'PAID' project leads.</div>
+            </div>
+            <div class="bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-8 rounded-3xl shadow-xl dark:shadow-lg hover:shadow-2xl dark:hover:shadow-[0_20px_40px_rgba(244,63,94,0.1)] hover:border-rose-500/30 transition-all duration-500 hover:-translate-y-1 group">
+                <div class="text-gray-500 dark:text-slate-400 text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2">
+                    <div class="w-1.5 h-1.5 rounded-full bg-rose-500 dark:bg-rose-400"></div> Total Liabilities
+                </div>
+                <div class="text-5xl font-black text-rose-500 dark:text-rose-400 font-mono tracking-tighter group-hover:scale-105 origin-left transition-transform duration-500">${{ "%.2f"|format(total_liabilities) }}</div>
+                <div class="mt-4 text-[11px] text-gray-400 dark:text-slate-500 italic font-medium">Sum of all active, non-settled payouts.</div>
+            </div>
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/40 dark:to-blue-600/10 backdrop-blur-xl border border-blue-200 dark:border-blue-500/30 p-8 rounded-3xl shadow-xl hover:shadow-2xl dark:shadow-[0_10px_30px_rgba(59,130,246,0.15)] dark:hover:shadow-[0_20px_50px_rgba(59,130,246,0.3)] transition-all duration-500 hover:-translate-y-1 group relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-500/10 dark:bg-blue-500/20 blur-[50px] rounded-full group-hover:bg-blue-400/20 dark:group-hover:bg-blue-400/30 transition-colors">
+                </div>
+                <div class="text-blue-600 dark:text-blue-300 text-[10px] uppercase font-bold tracking-widest mb-3 flex items-center gap-2 relative z-10">
+                    <div class="w-1.5 h-1.5 rounded-full bg-blue-500 dark:bg-blue-400 animate-pulse"></div> Net Profit
+                </div>
+                <div class="text-5xl font-black text-gray-900 dark:text-white font-mono tracking-tighter group-hover:scale-105 origin-left transition-transform duration-500 relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">${{ "%.2f"|format(net_profit) }}</div>
+                <div class="mt-4 text-blue-600/60 dark:text-blue-200/60 italic font-medium relative z-10">Revenue minus active liabilities.</div>
+            </div>
+        </div>
+
+        <!-- Charts and Analytics Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-14 max-w-7xl mx-auto">
+            <!-- Revenue Trend Chart -->
+            <div class="bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-8 rounded-3xl shadow-xl dark:shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-extrabold text-gray-900 dark:text-white text-lg tracking-wide">Revenue Performance</h3>
+                    <span class="px-3 py-1 bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-bold rounded-lg border border-blue-500/20">MONTHLY</span>
+                </div>
+                <div class="h-[280px]">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Project Status Distribution -->
+            <div class="bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-8 rounded-3xl shadow-xl dark:shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-extrabold text-gray-900 dark:text-white text-lg tracking-wide">Project Funnel</h3>
+                    <span class="px-3 py-1 bg-purple-500/10 text-purple-600 dark:text-purple-400 text-[10px] font-bold rounded-lg border border-purple-500/20">LIFETIME</span>
+                </div>
+                <div class="h-[280px] flex items-center justify-center">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payouts Table -->
+        <div class="bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl transition-all duration-500 hover:shadow-2xl max-w-7xl mx-auto mb-14">
+            <div class="px-8 py-6 border-b border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-white/5 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-blue-500/10 dark:bg-blue-500/20 rounded-lg text-blue-600 dark:text-blue-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                    </div>
+                    <h3 class="font-extrabold text-gray-900 dark:text-white text-lg tracking-wide">Worker Payout Manifest</h3>
+                </div>
+                <!-- Filter Status -->
+                <div class="flex gap-2">
+                    <button class="px-4 py-1.5 rounded-xl bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-slate-400 text-xs font-bold border border-transparent hover:border-blue-500/30 transition-all">All</button>
+                    <button class="px-4 py-1.5 rounded-xl bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-slate-400 text-xs font-bold border border-transparent hover:border-emerald-500/30 transition-all">Settled</button>
+                    <button class="px-4 py-1.5 rounded-xl bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-slate-400 text-xs font-bold border border-transparent hover:border-amber-500/30 transition-all">Due</button>
+                </div>
+            </div>
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-slate-300 text-xs uppercase tracking-widest border-b border-gray-200 dark:border-white/10">
+                        <th class="px-8 py-5 font-bold">Project</th>
+                        <th class="px-8 py-5 font-bold">Worker</th>
+                        <th class="px-8 py-5 font-bold">Payout</th>
+                        <th class="px-8 py-5 font-bold">Status</th>
+                        <th class="px-8 py-5 font-bold text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-white/5">
+                    {% for task in tasks %}
+                    <tr class="hover:bg-gray-50 dark:hover:bg-white/10 transition-colors duration-300 group/row">
+                        <td class="px-8 py-6">
+                            <div class="font-bold text-gray-900 dark:text-white text-base group-hover/row:-translate-y-0.5 transition-transform">{{ task.lead.title }}</div>
+                            <div class="text-[10px] text-gray-400 dark:text-slate-500 font-mono tracking-widest mt-1 uppercase">{{ task.lead.status }}</div>
+                        </td>
+                        <td class="px-8 py-6">
+                            {% if task.freelancer %}
+                            <div class="text-sm font-bold text-gray-700 dark:text-slate-200">{{ task.freelancer.name }}</div>
+                            <div class="text-[10px] text-blue-500 dark:text-blue-400 uppercase font-bold tracking-widest mt-1">Registered</div>
+                            {% elif task.scraped_freelancer %}
+                            <div class="text-sm font-bold text-gray-700 dark:text-slate-200">{{ task.scraped_freelancer.name }}</div>
+                            <div class="text-[10px] text-emerald-500 dark:text-emerald-400 uppercase font-bold tracking-widest mt-1">Talent Scout</div>
+                            {% endif %}
+                        </td>
+                        <td class="px-8 py-6">
+                            <span class="text-rose-500 dark:text-rose-400 font-mono font-bold tracking-wide">${{ "%.2f"|format(task.payout_price) }}</span>
+                        </td>
+                        <td class="px-8 py-6">
+                            {% if task.status == 'settled' %}
+                            <span class="px-4 py-1.5 bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 rounded-full text-[10px] font-bold border border-emerald-500/20 tracking-widest shadow-sm">SETTLED</span>
+                            {% else %}
+                            <span class="px-4 py-1.5 bg-amber-500/10 text-amber-400 rounded-full text-[10px] font-bold border border-amber-500/30 tracking-widest shadow-sm animate-pulse">DUE</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            {% if task.status != 'settled' %}
+                            <form action="{{ admin_prefix }}/settle-payout" method="POST">
+                                <input type="hidden" name="task_id" value="{{ task.id }}">
+                                <button type="submit" class="text-xs py-2 px-5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-bold transition-all duration-300 shadow-lg shadow-blue-600/20 hover:-translate-y-0.5 hover:scale-105 active:scale-95 group/btn flex items-center gap-2 ml-auto">
+                                    Pay Freelancer
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                                </button>
+                            </form>
+                            {% else %}
+                            <div class="inline-flex text-xs py-2 px-5 bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-slate-500 rounded-xl font-bold border border-transparent opacity-50 cursor-not-allowed">
+                                Paid Out
+                            </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if not tasks %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-10 text-center text-gray-400 dark:text-slate-500 italic">No tasks assigned yet.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
+
+<script>
+    // 1. Revenue Performance Chart (Line)
+    const revCtx = document.getElementById('revenueChart').getContext('2d');
+    new Chart(revCtx, {
+        type: 'line',
+        data: {
+            labels: {{ month_labels | safe }},
+            datasets: [{
+                label: 'Revenue',
+                data: {{ monthly_revenue | safe }},
+                borderColor: '#60a5fa',
+                backgroundColor: 'rgba(96, 165, 250, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#60a5fa',
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    ticks: { color: '#94a3b8', font: { size: 10 } }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#94a3b8', font: { size: 10 } }
+                }
+            }
+        }
+    });
+
+    // 2. Project Status Funnel (Doughnut)
+    const statusCtx = document.getElementById('statusChart').getContext('2d');
+    new Chart(statusCtx, {
+        type: 'doughnut',
+        data: {
+            labels: {{ status_labels | safe }},
+            datasets: [{
+                data: {{ status_values | safe }},
+                backgroundColor: [
+                    'rgba(96, 165, 250, 0.6)', // blue
+                    'rgba(16, 185, 129, 0.6)', // emerald
+                    'rgba(245, 158, 11, 0.6)', // amber
+                    'rgba(168, 85, 247, 0.6)', // purple
+                ],
+                borderColor: 'rgba(255, 255, 255, 0.1)',
+                borderWidth: 2,
+                hoverOffset: 15
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: '#94a3b8',
+                        usePointStyle: true,
+                        padding: 20,
+                        font: { size: 11, weight: 'bold' }
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

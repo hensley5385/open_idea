@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+{% block title %}Client Dashboard - The Bridge{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<nav class="border-b border-white/20 dark:border-white/5 bg-white/70 dark:bg-[#0F0F0F]/70 backdrop-blur-xl sticky top-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-2">
+            <div class="w-7 h-7 bg-brand rounded flex items-center justify-center text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M12 2l2.4 7.6H22l-6.2 4.4 2.4 7.6-6.2-4.4-6.2 4.4 2.4-7.6-6.2-4.4h7.6z"/>
+                </svg>
+            </div>
+            <span class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">The Bridge</span>
+        </a>
+        
+        <!-- Links -->
+        <div class="flex items-center gap-8">
+            <a href="/explore" class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Explore</a>
+            <a href="/dashboard" class="text-sm font-medium text-gray-900 dark:text-white transition">Dashboard</a>
+            
+            <div class="hidden sm:flex bg-gray-100 dark:bg-white/5 p-1 rounded-full border border-gray-200 dark:border-white/5">
+                <a href="/dashboard" class="px-4 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-full bg-white dark:bg-brand text-gray-900 dark:text-white shadow-sm dark:shadow-lg">Client</a>
+                <a href="/portal/landing" class="px-4 py-1.5 text-[10px] font-black uppercase tracking-wider rounded-full text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">Freelancer</a>
+            </div>
+
+            <button onclick="toggleTheme()" class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition" aria-label="Toggle Theme">
+                <!-- Moon Icon (visible in light mode) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 dark:hidden">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+                <!-- Sun Icon (visible in dark mode) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 hidden dark:block">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M3 12h2.25m.386-6.364l1.591-1.591M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                </svg>
+            </button>
+            <a href="/login" class="bg-brand hover:bg-brandhover text-white text-sm font-semibold px-5 py-2 rounded-full transition">Sign In</a>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-6 py-12">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Client Dashboard</h1>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">Manage your active service requests and team collaborations.</p>
+        </div>
+        <a href="/request-service" class="bg-brand hover:bg-brandhover text-white font-bold py-2.5 px-6 rounded-lg transition flex items-center justify-center gap-2 text-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            New Request
+        </a>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+        <div class="group bg-white/90 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/20 dark:border-white/5 shadow-lg hover:shadow-[0_15px_30px_rgba(59,130,246,0.15)] dark:shadow-none dark:hover:shadow-[0_15px_30px_rgba(59,130,246,0.1)] rounded-2xl p-6 relative overflow-hidden transition-all duration-500 hover:-translate-y-1">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="flex justify-between items-start mb-6 relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold text-gray-400 group-hover:text-blue-500 tracking-wider transition-colors">TOTAL</span>
+            </div>
+            <div class="relative z-10">
+                <div class="text-4xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-300 stat-number" data-target="3">0</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">Active Projects</div>
+            </div>
+        </div>
+
+        <div class="group bg-white/90 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/20 dark:border-white/5 shadow-lg hover:shadow-[0_15px_30px_rgba(249,115,22,0.15)] dark:shadow-none dark:hover:shadow-[0_15px_30px_rgba(249,115,22,0.1)] rounded-2xl p-6 relative overflow-hidden transition-all duration-500 hover:-translate-y-1">
+            <div class="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="flex justify-between items-start mb-6 relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-500 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold text-gray-400 group-hover:text-orange-500 tracking-wider transition-colors">TOTAL</span>
+            </div>
+            <div class="relative z-10">
+                <div class="text-4xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-colors duration-300 stat-number" data-target="1">0</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">Pending Review</div>
+            </div>
+        </div>
+
+        <div class="group bg-white/90 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/20 dark:border-white/5 shadow-lg hover:shadow-[0_15px_30px_rgba(0,211,127,0.15)] dark:shadow-none dark:hover:shadow-[0_15px_30px_rgba(0,211,127,0.1)] rounded-2xl p-6 relative overflow-hidden transition-all duration-500 hover:-translate-y-1">
+            <div class="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="flex justify-between items-start mb-6 relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center text-brand group-hover:scale-110 group-hover:rotate-12 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold text-gray-400 group-hover:text-brand tracking-wider transition-colors">TOTAL</span>
+            </div>
+            <div class="relative z-10">
+                <div class="text-4xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-brand transition-colors duration-300 stat-number" data-target="12">0</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">Completed</div>
+            </div>
+        </div>
+
+        <div class="group bg-white/90 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/20 dark:border-white/5 shadow-lg hover:shadow-[0_15px_30px_rgba(168,85,247,0.15)] dark:shadow-none dark:hover:shadow-[0_15px_30px_rgba(168,85,247,0.1)] rounded-2xl p-6 relative overflow-hidden transition-all duration-500 hover:-translate-y-1">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="flex justify-between items-start mb-6 relative z-10">
+                <div class="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center text-purple-500 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.068.157 2.148.279 3.238.364.466.037.893.281 1.153.671L12 21l2.652-3.978c.26-.39.687-.634 1.153-.67 1.09-.086 2.17-.208 3.238-.365 1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+                </div>
+                <span class="text-[10px] font-bold text-gray-400 group-hover:text-purple-500 tracking-wider transition-colors">TOTAL</span>
+            </div>
+            <div class="relative z-10">
+                <div class="text-4xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-purple-500 dark:group-hover:text-purple-400 transition-colors duration-300 stat-number" data-target="5">0</div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">Messages</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Left Column: Active Requests -->
+        <div class="lg:col-span-2">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Active Requests</h2>
+                <div class="flex items-center gap-3">
+                    <button class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg></button>
+                    <button class="text-gray-400 hover:text-gray-900 dark:hover:text-white transition"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" /></svg></button>
+                </div>
+            </div>
+
+            <!-- Real Projects (DB-backed) -->
+            {% if leads %}
+            <div class="mb-6 bg-white/90 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/20 dark:border-white/5 rounded-2xl p-6 shadow-lg">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-extrabold text-gray-900 dark:text-white">Your Projects</h3>
+                    <span class="text-[11px] font-black uppercase tracking-widest text-gray-400">{{ leads|length }} total</span>
+                </div>
+                <div class="space-y-3">
+                    {% for lead in leads[:6] %}
+                    <a href="/dashboard/projects/{{ lead.id }}" class="block p-4 rounded-xl border border-gray-200/60 dark:border-white/10 hover:border-brand/40 hover:bg-white dark:hover:bg-white/5 transition">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="min-w-0">
+                                <div class="font-bold text-gray-900 dark:text-white truncate">{{ lead.title }}</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">Status: {{ lead.status }} • Budget: ${{ lead.source_price }}</div>
+                            </div>
+                            <span class="text-xs font-black text-brand whitespace-nowrap">Open</span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Request Item 1 -->
+            <div class="group/req bg-white/90 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/20 dark:border-white/5 shadow-lg hover:shadow-2xl dark:shadow-none rounded-2xl p-6 mb-4 relative hover:scale-[1.02] transition-all duration-300 overflow-hidden cursor-pointer">
+                <div class="absolute inset-x-0 bottom-0 h-1 bg-brand transform scale-x-0 group-hover/req:scale-x-100 transition-transform duration-500 origin-left"></div>
+                <button class="absolute top-6 right-6 text-gray-400 dark:text-gray-500 hover:text-brand dark:hover:text-brand hover:rotate-90 transition-all duration-300 z-10"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" /></svg></button>
+                <div class="flex items-center gap-3 mb-3 relative z-10">
+                    <span class="bg-gray-100 dark:bg-[#242424] text-xs font-bold text-gray-600 dark:text-gray-300 px-3 py-1 rounded-full border border-gray-200 dark:border-[#333]">DEVELOPMENT</span>
+                    <span class="text-xs text-gray-500 font-medium">• 2 hours ago</span>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1 group-hover/req:text-brand transition-colors relative z-10">E-commerce Platform Redesign</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 relative z-10">Web Engineering Team</p>
+                
+                <div class="flex items-center justify-between text-sm font-semibold mb-2 relative z-10">
+                    <span class="text-gray-900 dark:text-white">In Progress</span>
+                    <span class="text-brand">65%</span>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-[#2A2A2A] rounded-full h-2 overflow-hidden relative z-10 shadow-inner">
+                    <div class="bg-brand h-2 rounded-full relative overflow-hidden transition-all duration-1000 ease-out progress-bar" style="width: 0%" data-width="65%">
+                        <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Request Item 2 -->
+            <div class="group/req bg-white/90 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/20 dark:border-white/5 shadow-lg hover:shadow-2xl dark:shadow-none rounded-2xl p-6 mb-4 relative hover:scale-[1.02] transition-all duration-300 overflow-hidden cursor-pointer">
+                <div class="absolute inset-x-0 bottom-0 h-1 bg-brand transform scale-x-0 group-hover/req:scale-x-100 transition-transform duration-500 origin-left"></div>
+                <button class="absolute top-6 right-6 text-gray-400 dark:text-gray-500 hover:text-brand dark:hover:text-brand hover:rotate-90 transition-all duration-300 z-10"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" /></svg></button>
+                <div class="flex items-center gap-3 mb-3 relative z-10">
+                    <span class="bg-gray-100 dark:bg-[#242424] text-xs font-bold text-gray-600 dark:text-gray-300 px-3 py-1 rounded-full border border-gray-200 dark:border-[#333]">DESIGN</span>
+                    <span class="text-xs text-gray-500 font-medium">• Yesterday</span>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1 group-hover/req:text-brand transition-colors relative z-10">Q2 Marketing Assets</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 relative z-10">Creative Design Studio</p>
+                
+                <div class="flex items-center justify-between text-sm font-semibold mb-2 relative z-10">
+                    <span class="text-gray-900 dark:text-white">Reviewing</span>
+                    <span class="text-brand">90%</span>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-[#2A2A2A] rounded-full h-2 overflow-hidden relative z-10 shadow-inner">
+                    <div class="bg-brand h-2 rounded-full relative overflow-hidden transition-all duration-1000 ease-out progress-bar" style="width: 0%" data-width="90%">
+                        <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="w-full py-4 text-center text-sm font-bold text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-[#1A1A1A] hover:shadow-lg hover:-translate-y-1 rounded-xl transition-all duration-300 border border-dashed border-gray-300 dark:border-gray-700 mt-4 backdrop-blur-sm">
+                View All Requests
+            </button>
+        </div>
+
+        <!-- Right Column: Messages & Support -->
+        <div class="lg:col-span-1 space-y-6 lg:sticky lg:top-28 h-fit">
+            
+            <!-- Messages Card -->
+            <div class="bg-white/90 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/20 dark:border-white/5 shadow-lg hover:shadow-xl dark:shadow-none rounded-2xl p-6 transition-all duration-300">
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Recent Messages</h2>
+                
+                <div class="space-y-2 mb-6">
+                    <div class="group cursor-pointer p-3 -mx-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-black/5 dark:hover:border-white/5">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-brand transition-colors">Sarah <span class="font-normal text-gray-500 dark:text-gray-400">(Web Engineering)</span></h4>
+                            <span class="text-[10px] text-gray-400 dark:text-gray-500 font-bold">10:45 AM</span>
+                        </div>
+                        <p class="text-[13px] text-gray-500 dark:text-gray-400 truncate">The checkout flow is ready for review.</p>
+                    </div>
+                    
+                    <div class="group cursor-pointer p-3 -mx-3 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 transition-all duration-300 border border-transparent hover:border-black/5 dark:hover:border-white/5">
+                        <div class="flex justify-between items-center mb-1">
+                            <h4 class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-brand transition-colors">Mike <span class="font-normal text-gray-500 dark:text-gray-400">(Creative Design)</span></h4>
+                            <span class="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase">Yesterday</span>
+                        </div>
+                        <p class="text-[13px] text-gray-500 dark:text-gray-400 truncate">Sent over the final color palette options.</p>
+                    </div>
+                </div>
+
+                <button class="w-full text-brand text-sm font-bold hover:text-brandhover transition bg-brand/5 hover:bg-brand/10 dark:bg-brand/10 dark:hover:bg-brand/20 py-3 rounded-xl">
+                    Open Messenger
+                </button>
+            </div>
+
+            <!-- Support Card -->
+            <div id="support-section" class="bg-white/90 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/20 dark:border-white/5 shadow-lg hover:shadow-xl dark:shadow-none rounded-2xl p-6 relative overflow-hidden group transition-all duration-300">
+                <div class="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-2 relative z-10">Message Admin</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 relative z-10">Have a question? Message our team directly from here.</p>
+                
+                <form action="/send-message" method="POST" class="space-y-4 relative z-10">
+                    <div>
+                        <input type="email" name="email" required placeholder="Your Email" class="w-full bg-gray-50 dark:bg-[#242424] border border-gray-200 dark:border-[#333] text-gray-900 dark:text-white rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition">
+                    </div>
+                    <div>
+                        <input type="text" name="subject" required placeholder="Subject" class="w-full bg-gray-50 dark:bg-[#242424] border border-gray-200 dark:border-[#333] text-gray-900 dark:text-white rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition">
+                    </div>
+                    <div>
+                        <textarea name="message" required rows="3" placeholder="Your message..." class="w-full bg-gray-50 dark:bg-[#242424] border border-gray-200 dark:border-[#333] text-gray-900 dark:text-white rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-brand hover:bg-brandhover text-white font-bold py-3 rounded-xl text-sm transition-all hover:scale-105 active:scale-95 shadow-md flex items-center justify-center gap-2">
+                        Send Message
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<!-- Project Messenger -->
+<div id="messenger-widget" class="fixed bottom-8 right-8 w-80 bg-gray-800/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl text-white transform translate-y-16 opacity-0 transition-all duration-500 ease-in-out z-50 hidden">
+    <!-- Header -->
+    <div class="flex justify-between items-center p-4 border-b border-white/10 bg-emerald-500 rounded-t-2xl">
+        <div class="flex items-center gap-3">
+            <div class="relative">
+                <div class="w-3 h-3 bg-white rounded-full absolute -top-1 -right-1 border-2 border-emerald-500"></div>
+                <h3 class="text-sm font-bold text-white">Project Messenger</h3>
+            </div>
+            <span class="text-xs text-white/80">Live Support</span>
+        </div>
+        <button id="close-messenger" class="text-white/80 hover:text-white transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+    </div>
+    <!-- Messages -->
+    <div class="p-4 space-y-4 h-64 overflow-y-auto bg-black">
+         {% for message in messages|default([]) %}
+         <div class="flex flex-col {% if loop.index is even %}items-start{% else %}items-end{% endif %}">
+             <div class="{% if loop.index is even %}bg-gray-800{% else %}bg-emerald-600{% endif %} rounded-lg p-3 max-w-xs">
+                 <p class="text-sm text-white">{{ message.content }}</p>
+                 <span class="text-xs {% if loop.index is even %}text-gray-400{% else %}text-emerald-100{% endif %} mt-1 block">{{ message.created_at.strftime('%I:%M %p') }}</span>
+             </div>
+         </div>
+         {% endfor %}
+     </div>
+    <!-- Input -->
+    <div class="p-4 border-t border-white/10 bg-black rounded-b-2xl">
+        <div class="relative">
+            <input type="text" placeholder="Type a message..." class="w-full bg-gray-900 border border-gray-800 rounded-lg py-2 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white">
+            <button class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-emerald-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<button id="open-messenger-btn" class="fixed bottom-8 right-8 bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-full shadow-lg flex items-center gap-2 transition-all duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+    Project Messenger
+</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const messengerWidget = document.getElementById('messenger-widget');
+        const openBtn = document.getElementById('open-messenger-btn');
+        const closeBtn = document.getElementById('close-messenger');
+        const openInDashboardBtn = document.querySelector('.w-full.text-brand');
+
+        function openMessenger() {
+            messengerWidget.classList.remove('hidden', 'opacity-0', 'translate-y-16');
+            openBtn.classList.add('hidden');
+        }
+
+        function closeMessenger() {
+            messengerWidget.classList.add('opacity-0', 'translate-y-16');
+            setTimeout(() => {
+                messengerWidget.classList.add('hidden');
+                openBtn.classList.remove('hidden');
+            }, 500);
+        }
+
+        openBtn.addEventListener('click', openMessenger);
+        closeBtn.addEventListener('click', closeMessenger);
+        openInDashboardBtn.addEventListener('click', openMessenger);
+
+        // Escape-to-close
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            if (!messengerWidget.classList.contains('hidden')) {
+                closeMessenger();
+            }
+        });
+
+        // Click-outside-to-close
+        document.addEventListener('click', (e) => {
+            if (messengerWidget.classList.contains('hidden')) return;
+            if (e.target.closest('#messenger-widget')) return;
+            if (e.target.closest('#open-messenger-btn')) return;
+            closeMessenger();
+        });
+    });
+</script>
+{% endblock %}

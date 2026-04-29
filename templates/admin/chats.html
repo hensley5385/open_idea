@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Chats{% endblock %}
+
+{% block body_class %}bg-white dark:bg-[#0A0A0A] text-gray-900 dark:text-slate-200 relative overflow-hidden transition-colors duration-300{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-6 py-12">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Chat Oversight</h1>
+            <p class="text-sm text-gray-500 dark:text-slate-400 mt-2">Private admin-only view for dispute resolution.</p>
+        </div>
+        <a href="{{ admin_prefix }}/" class="text-sm font-bold text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white transition">Back to Admin</a>
+    </div>
+
+    <div class="bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl overflow-hidden shadow-xl">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-slate-300 text-xs uppercase tracking-widest border-b border-gray-200 dark:border-white/10">
+                    <th class="px-6 py-4 font-bold">Conversation</th>
+                    <th class="px-6 py-4 font-bold">Task</th>
+                    <th class="px-6 py-4 font-bold">Client</th>
+                    <th class="px-6 py-4 font-bold">Freelancer</th>
+                    <th class="px-6 py-4 font-bold text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-white/5">
+                {% for c in conversations %}
+                <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition">
+                    <td class="px-6 py-4 font-mono text-xs text-gray-600 dark:text-slate-300">#{{ c.id }}</td>
+                    <td class="px-6 py-4 font-mono text-xs text-gray-600 dark:text-slate-300">#{{ c.task_id }}</td>
+                    <td class="px-6 py-4 text-sm font-bold">{{ c.client.name if c.client else 'Client' }}</td>
+                    <td class="px-6 py-4 text-sm font-bold">{{ c.freelancer.name if c.freelancer else 'Freelancer' }}</td>
+                    <td class="px-6 py-4 text-right">
+                        <a href="{{ admin_prefix }}/chats/{{ c.id }}" class="text-xs font-black px-4 py-2 rounded-xl bg-brand/10 text-brand hover:bg-brand hover:text-black transition border border-brand/20">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% if not conversations %}
+                <tr><td colspan="5" class="px-6 py-10 text-center text-gray-500 italic">No conversations yet.</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+

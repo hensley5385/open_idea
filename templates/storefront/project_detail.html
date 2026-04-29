@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Project - The Bridge{% endblock %}
+
+{% block content %}
+<nav class="border-b border-white/20 dark:border-white/5 bg-white/70 dark:bg-[#0F0F0F]/70 backdrop-blur-xl sticky top-0 z-40 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/dashboard" class="text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">&larr; Back</a>
+        <div class="text-sm font-black text-gray-500 dark:text-gray-400">Client</div>
+    </div>
+</nav>
+
+<main class="max-w-4xl mx-auto px-6 py-10">
+    <div class="bg-white/90 dark:bg-[#1A1A1A]/80 backdrop-blur-xl border border-white/20 dark:border-white/5 rounded-3xl p-8 shadow-lg">
+        <div class="flex items-start justify-between gap-6">
+            <div class="min-w-0">
+                <h1 class="text-2xl font-extrabold text-gray-900 dark:text-white truncate">{{ lead.title }}</h1>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                    Status: <span class="font-bold">{{ lead.status }}</span>
+                    {% if task %} • Task #{{ task.id }}{% endif %}
+                </p>
+            </div>
+            {% if conversation and freelancer %}
+            <a href="/chat/{{ conversation.id }}" class="bg-brand hover:bg-brandhover text-white font-bold px-6 py-3 rounded-xl transition-all active:scale-95 whitespace-nowrap">
+                Message {{ freelancer.name }}
+            </a>
+            {% else %}
+            <span class="text-xs font-bold text-gray-400 dark:text-gray-500">No active freelancer chat yet</span>
+            {% endif %}
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white/70 dark:bg-black/40 border border-gray-200/60 dark:border-white/10 rounded-2xl p-6">
+                <div class="text-[11px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">Contact</div>
+                <div class="text-sm font-bold text-gray-800 dark:text-gray-200">{{ lead.client_contact }}</div>
+            </div>
+            <div class="bg-white/70 dark:bg-black/40 border border-gray-200/60 dark:border-white/10 rounded-2xl p-6">
+                <div class="text-[11px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">Budget</div>
+                <div class="text-sm font-black text-emerald-600 dark:text-emerald-400">${{ lead.source_price }}</div>
+            </div>
+        </div>
+
+        <div class="mt-6 bg-white/70 dark:bg-black/40 border border-gray-200/60 dark:border-white/10 rounded-2xl p-6">
+            <div class="text-[11px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">Description</div>
+            <div class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{{ lead.description }}</div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+

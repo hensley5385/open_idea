@@ -42,6 +42,7 @@ class Lead(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     link = Column(String, unique=True, index=True)
+    source = Column(String) # e.g., 'WWR', 'Reddit', 'HackerNews'
     description = Column(String)
     source_price = Column(Float)
     client_contact = Column(String)

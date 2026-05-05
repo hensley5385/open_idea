@@ -15,7 +15,7 @@ from auth_utils import (
     read_signed_token,
     verify_password,
 )
-from scraper import scrape_wwr_jobs, scrape_freelancers, scrape_all_jobs
+from scraper import scrape_wwr_jobs, scrape_freelancers
 
 router = APIRouter()
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -142,7 +142,7 @@ async def admin_dashboard(
 
 @router.post("/scrape")
 async def trigger_scrape(db: Session = Depends(get_db), admin: User = Depends(require_admin_session)):
-    jobs = await scrape_all_jobs()
+    jobs = scrape_wwr_jobs()
     new_leads_count = 0
     
     for job in jobs:
@@ -152,17 +152,16 @@ async def trigger_scrape(db: Session = Depends(get_db), admin: User = Depends(re
             new_lead = Lead(
                 title=job.get("title", "No Title"),
                 link=job.get("link", "#"),
-                source=job.get("source", "Unknown"),
                 description=(job.get("description") or "")[:500], # Truncate safely
-                source_price=150.0, # Competitive initial budget
-                client_contact=f"{job.get('source', 'Unknown')} Job",
+                source_price=100.0, # Default Estimated Budget
+                client_contact="RSS Feed",
                 status="new"
             )
             db.add(new_lead)
             new_leads_count += 1
     
     db.commit()
-    return {"message": f"Successfully scraped. Added {new_leads_count} new leads from multiple platforms."}
+    return {"message": f"Successfully scraped. Added {new_leads_count} new leads."}
 
 @router.get("/talent-scout", response_class=HTMLResponse)
 async def talent_scout(request: Request, db: Session = Depends(get_db), admin: User = Depends(require_admin_session)):

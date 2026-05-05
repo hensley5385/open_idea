@@ -75,7 +75,6 @@
                 <thead>
                     <tr class="bg-white/5 text-slate-300 text-xs uppercase tracking-widest border-b border-white/10">
                         <th class="px-8 py-5 font-bold">Project Title</th>
-                        <th class="px-8 py-5 font-bold">Source</th>
                         <th class="px-8 py-5 font-bold">Source Price</th>
                         <th class="px-8 py-5 font-bold">Contact</th>
                         <th class="px-8 py-5 font-bold">Status</th>
@@ -87,9 +86,6 @@
                     <tr class="hover:bg-white/10 transition-colors duration-300 group/row">
                         <td class="px-8 py-6">
                             <div class="font-bold text-white text-base group-hover/row:-translate-y-0.5 transition-transform">{{ lead.title }}</div>
-                        </td>
-                        <td class="px-8 py-6">
-                            <span class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-lg text-[10px] font-bold border border-blue-500/20 uppercase tracking-tighter">{{ lead.source or 'Manual' }}</span>
                         </td>
                         <td class="px-8 py-6">
                             <span class="text-emerald-400 font-mono font-bold tracking-wide">${{ lead.source_price }}</span>

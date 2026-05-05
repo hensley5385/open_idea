@@ -47,10 +47,6 @@ def migrate_sqlite_schema() -> None:
         if not has_column("leads", "created_at"):
             cur.execute("ALTER TABLE leads ADD COLUMN created_at DATETIME")
 
-        # leads.source (to track platform)
-        if not has_column("leads", "source"):
-            cur.execute("ALTER TABLE leads ADD COLUMN source VARCHAR")
-
         conn.commit()
     finally:
         conn.close()
